@@ -1,7 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-router.all('/*',(req,res, next)=>{
+function useAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next(); // Proceed if authenticated
+    } else {
+        res.redirect('/signin'); // Redirect to login if authentication fails
+    }
+}
+
+router.all('/*', useAuthenticated, (req, res, next) => {
     res.locals.layout = 'admin';
     next();
 });
@@ -19,11 +27,15 @@ router.get('/product', (req, res) => {
 });
 
 router.get('/blogwrite', (req, res) => {
-    res.render('admin/blogwrite/blogwrite-list', { title: 'Ba viết blog' });
+    res.render('admin/blogwrite/blogwrite-list', { title: 'Bai viết blog' });
 });
 
 router.get('/test', (req, res) => {
     res.render('admin/test/test-file', { title: 'Test' });
+});
+
+router.get('/users', (req, res) => {
+    res.render('admin/users/user_list', { title: 'Quản lý người dùng' });
 });
 
 module.exports = router;

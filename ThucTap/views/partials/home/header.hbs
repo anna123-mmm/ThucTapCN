@@ -1,6 +1,13 @@
 <header class="header">
     <div class="header__wrap">
         <div class="container">
+
+            {{#if user}}
+                <div class="header__welcome" style="font-size: 12px; color: #ffffff; text-align: right; margin-top: 5px;">
+                    Xin chào, {{user.name}}!
+                </div>
+            {{/if}}
+
             <div class="row">
                 <div class="col-12">
                     <div class="header__content">
@@ -37,6 +44,7 @@
                             <li class="header__nav-item">
                                 <a href="/test" class="header__nav-link">Test</a>
                             </li>
+
                             <!-- dropdown -->
 
                             <!-- end dropdown -->
@@ -44,15 +52,22 @@
                         <!-- end header nav -->
 
                         <!-- header auth -->
-                        <div class="header__auth">
+                        <div class="header__auth" style="display:flex; align-items:center; gap:20px;">
                             <button class="header__search-btn" type="button">
                                 <i class="icon ion-ios-search"></i>
                             </button>
 
-                            <a href="/signin" class="header__sign-in">
-                                <i class="icon ion-ios-log-in"></i>
-                                <div class="header__sign-chu">sign in</div>
-                            </a>
+                            {{#if user}}
+                                <a href="/logout" class="header__sign-in" style="padding: 8px 18px;">
+                                    <i class="icon ion-ios-log-out"></i>
+                                    <div class="header__sign-chu">Logout</div>
+                                </a>
+                            {{else}}
+                                <a href="/signin" class="header__sign-in">
+                                    <i class="icon ion-ios-log-in"></i>
+                                    <div class="header__sign-chu">Sign in</div>
+                                </a>
+                            {{/if}}
                         </div>
                         <!-- end header auth -->
 
@@ -68,7 +83,6 @@
             </div>
         </div>
     </div>
-
     <!-- header search -->
     <form action="#" class="header__search">
         <div class="container">
