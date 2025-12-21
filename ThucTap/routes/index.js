@@ -28,6 +28,18 @@ router.get('/details2', function(req, res, next) {
     res.render('blog/details2');
 });
 
+router.get('/details3', function(req, res, next) {
+    res.render('blog/details3');
+});
+
+router.get('/details4', function(req, res, next) {
+    res.render('blog/details4');
+});
+
+router.get('/details5', function(req, res, next) {
+    res.render('blog/details5');
+});
+
 router.get('/test', function(req, res, next) {
     res.render('blog/test');
 });
