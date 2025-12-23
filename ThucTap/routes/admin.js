@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const { spawn } = require('child_process');
 
 /*function useAuthenticated(req, res, next) {
    if (req.isAuthenticated()) {
@@ -37,6 +38,20 @@ router.get('/test', (req, res) => {
 
 router.get('/users', (req, res) => {
     res.render('admin/users/user_list', { title: 'Quản lý người dùng' });
+});
+
+// Start poster fetcher in background
+router.get('/run-fetch-posters', (req, res) => {
+    const child = spawn(process.execPath, ['scripts/fetchPosters.js'], { detached: true, stdio: 'ignore' });
+    child.unref();
+    res.send({ started: true, pid: child.pid, script: 'fetchPosters.js' });
+});
+
+// Start trailer fetcher in background
+router.get('/run-fetch-trailers', (req, res) => {
+    const child = spawn(process.execPath, ['scripts/fetchTrailers.js'], { detached: true, stdio: 'ignore' });
+    child.unref();
+    res.send({ started: true, pid: child.pid, script: 'fetchTrailers.js' });
 });
 
 module.exports = router;

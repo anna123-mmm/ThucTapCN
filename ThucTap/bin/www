@@ -87,4 +87,13 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  
+  // Console log for user convenience
+  console.log('\n🎬 FlixGo Movie App is running!');
+  console.log('═══════════════════════════════════════');
+  console.log(`🌐 Server: http://localhost:${addr.port}`);
+  console.log('📱 Mobile: http://localhost:' + addr.port);
+  console.log('═══════════════════════════════════════');
+  console.log('📝 Press Ctrl+C to stop the server');
+  console.log('🔄 Use npm run dev for development mode\n');
 }

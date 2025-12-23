@@ -5,6 +5,7 @@ const { engine } = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
+require('dotenv').config(); // Load environment variables
 var app = express();
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -17,11 +18,67 @@ app.engine(
         defaultLayout: 'home',
         partialsDir: path.join(__dirname, 'views' , 'partials'),
         layoutsDir: path.join(__dirname, 'views' , 'layouts'),
+        runtimeOptions: {
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true,
+        },
+        helpers: {
+            // Math operations
+            math: function(lvalue, operator, rvalue) {
+                lvalue = parseFloat(lvalue);
+                rvalue = parseFloat(rvalue);
+                return {
+                    "+": lvalue + rvalue,
+                    "-": lvalue - rvalue,
+                    "*": lvalue * rvalue,
+                    "/": lvalue / rvalue,
+                    "%": lvalue % rvalue
+                }[operator];
+            },
+            // Comparison helpers
+            eq: function(a, b) {
+                return a === b;
+            },
+            gt: function(a, b) {
+                return a > b;
+            },
+            lt: function(a, b) {
+                return a < b;
+            },
+            // Ceiling function
+            ceil: function(value) {
+                return Math.ceil(value);
+            },
+            // Join array helper
+            join: function(array, separator) {
+                if (Array.isArray(array)) {
+                    return array.join(separator || ', ');
+                }
+                return array || '';
+            },
+            // Range helper for pagination
+            range: function(start, end) {
+                const result = [];
+                for (let i = start; i < end; i++) {
+                    result.push(i);
+                }
+                return result;
+            },
+            // Concat helper for URLs
+            concat: function() {
+                const args = Array.prototype.slice.call(arguments, 0, -1);
+                return args.join('');
+            },
+            // Encode URI component
+            encodeURIComponent: function(str) {
+                return encodeURIComponent(str || '');
+            }
+        }
     })
 );
 
 app.use(session({
-    secret: 'mySecret',
+    secret: process.env.SESSION_SECRET || 'mySecret',
     resave: true,
     saveUninitialized: true,
     //cookie: { maxAge: 1000 * 60 * 60 } // 1 giờ
@@ -45,6 +102,7 @@ var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var categoryRouter = require('./routes/category');
+var moviesRouter = require('./routes/movies');
 
 console.log(path.join(__dirname, 'views', 'layouts'));
 // view engine setup
@@ -62,6 +120,7 @@ app.use('/', indexRouter);
 app.use('/admin/category', categoryRouter);
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
+app.use('/movies', moviesRouter);
 
 //database mongo
 const mongoose = require('mongoose');
@@ -72,7 +131,7 @@ const bcryptjs = require('bcrypt');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://127.0.0.1/node') // No callback here
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/node') // No callback here
     .then(() => {
         console.log("MongoDB connected successfully!");
     })

@@ -1,0 +1,430 @@
+<!-- details -->
+<section class="section details">
+    <!-- details background -->
+    <div class="details__bg" data-bg="{{#if movie.posterPath}}https://image.tmdb.org/t/p/original{{movie.posterPath}}{{else}}/img/home/home__bg.jpg{{/if}}"></div>
+    <!-- end details background -->
+
+    <!-- details content -->
+    <div class="container">
+        <div class="row">
+            <!-- title -->
+            <div class="col-12">
+                <h1 class="details__title">{{movie.title}} {{#if movie.year}}({{movie.year}}){{/if}}</h1>
+            </div>
+            <!-- end title -->
+
+            <!-- content -->
+            <div class="col-12 col-xl-10">
+                <div class="card card--details card--series">
+                    <div class="row">
+                        <!-- card cover -->
+                        <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                            <div class="card__cover">
+                                {{#if movie.posterPath}}
+                                    <img src="https://image.tmdb.org/t/p/w500{{movie.posterPath}}" alt="{{movie.title}}">
+                                {{else}}
+                                    <img src="/img/covers/cover.jpg" alt="{{movie.title}}">
+                                {{/if}}
+                            </div>
+                        </div>
+                        <!-- end card cover -->
+
+                        <!-- card content -->
+                        <div class="col-12 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                            <div class="card__content">
+                                <div class="card__wrap">
+                                    {{#if movie.rating}}
+                                        <span class="card__rate"><i class="icon ion-ios-star"></i>{{movie.rating}}</span>
+                                    {{/if}}
+
+                                    <ul class="card__list">
+                                        <li>HD</li>
+                                        {{#if movie.year}}
+                                            {{#if (gt movie.year 2010)}}
+                                                <li>16+</li>
+                                            {{else}}
+                                                <li>PG</li>
+                                            {{/if}}
+                                        {{/if}}
+                                    </ul>
+                                </div>
+
+                                <ul class="card__meta">
+                                    <li><span>Genre:</span> 
+                                        {{#if movie.genres}}
+                                            {{#each movie.genres}}
+                                                <a href="/?genre={{this}}">{{this}}</a>
+                                            {{/each}}
+                                        {{else}}
+                                            <a href="#">Uncategorized</a>
+                                        {{/if}}
+                                    </li>
+                                    <li><span>Release year:</span> {{#if movie.year}}{{movie.year}}{{else}}Unknown{{/if}}</li>
+                                    {{#if movie.releaseDate}}
+                                        <li><span>Release date:</span> {{movie.releaseDate}}</li>
+                                    {{/if}}
+                                    <li><span>Rating:</span> {{#if movie.rating}}{{movie.rating}}/10{{else}}Not rated{{/if}}</li>
+                                </ul>
+
+                                <div class="card__description card__description--details">
+                                    {{#if movie.overview}}
+                                        {{movie.overview}}
+                                    {{else}}
+                                        No description available for this movie. This is an exciting film with great storylines and excellent performances from the cast.
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card content -->
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+
+            <!-- player -->
+            {{#if movie.trailerId}}
+            <div class="col-12 col-xl-6">
+                <div class="player">
+                    <iframe 
+                        src="https://www.youtube.com/embed/{{movie.trailerId}}?controls=1&showinfo=0&rel=0&modestbranding=1"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        title="{{movie.title}} Trailer"
+                        style="width: 100%; height: 400px; border: none; border-radius: 10px;">
+                    </iframe>
+                </div>
+            </div>
+            {{/if}}
+            <!-- end player -->
+
+            <!-- actions -->
+            <div class="col-12 col-xl-6">
+                <div class="details__wrap">
+                    <!-- actions -->
+                    <div class="details__devices">
+                        <span class="details__devices-title">Actions:</span>
+                        <ul class="details__devices-list">
+                            <li><a href="/movies/{{movie._id}}/watch" style="color: #ff55a5; text-decoration: none;"><i class="icon ion-ios-play"></i><span>Watch Trailer</span></a></li>
+                            <li><a href="/" style="color: #ff55a5; text-decoration: none;"><i class="icon ion-ios-home"></i><span>Home</span></a></li>
+                            {{#if movie.trailerId}}
+                                <li><a href="https://www.youtube.com/watch?v={{movie.trailerId}}" target="_blank" style="color: #ff55a5; text-decoration: none;"><i class="icon ion-logo-youtube"></i><span>YouTube</span></a></li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                    <!-- end actions -->
+
+                    <!-- share -->
+                    <div class="details__share">
+                        <span class="details__share-title">Share with friends:</span>
+
+                        <ul class="details__share-list">
+                            <li class="facebook"><a href="#" onclick="shareOnFacebook('{{movie.title}}', '{{movie._id}}')" target="_blank"><i class="icon ion-logo-facebook"></i></a></li>
+                            <li class="twitter"><a href="#" onclick="shareOnTwitter('{{movie.title}}', '{{movie._id}}')" target="_blank"><i class="icon ion-logo-twitter"></i></a></li>
+                            <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- end share -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end details content -->
+</section>
+<!-- end details -->
+
+<!-- content -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- content title -->
+                    <h2 class="content__title">Discover</h2>
+                    <!-- end content title -->
+
+                    <!-- content tabs nav -->
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Information</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Trailer</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Photos</a>
+                        </li>
+                    </ul>
+                    <!-- end content tabs nav -->
+
+                    <!-- content mobile tabs nav -->
+                    <div class="content__mobile-tabs" id="content__mobile-tabs">
+                        <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <input type="button" value="Information">
+                            <span></span>
+                        </div>
+
+                        <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Information</a></li>
+                                <li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Trailer</a></li>
+                                <li class="nav-item"><a class="nav-link" id="3-tab" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Photos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end content mobile tabs nav -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+                <!-- content tabs -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                        <div class="row">
+                            <!-- movie info -->
+                            <div class="col-12">
+                                <div class="movie-info-detailed">
+                                    <h3>Detailed Information</h3>
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <strong>Movie Title:</strong> {{movie.title}}
+                                        </div>
+                                        {{#if movie.year}}
+                                        <div class="info-item">
+                                            <strong>Production Year:</strong> {{movie.year}}
+                                        </div>
+                                        {{/if}}
+                                        {{#if movie.genres}}
+                                        <div class="info-item">
+                                            <strong>Genre:</strong> {{join movie.genres ", "}}
+                                        </div>
+                                        {{/if}}
+                                        {{#if movie.rating}}
+                                        <div class="info-item">
+                                            <strong>Rating:</strong> {{movie.rating}}/10 ⭐
+                                        </div>
+                                        {{/if}}
+                                        {{#if movie.releaseDate}}
+                                        <div class="info-item">
+                                            <strong>Release Date:</strong> {{movie.releaseDate}}
+                                        </div>
+                                        {{/if}}
+                                        {{#if movie.trailerId}}
+                                        <div class="info-item">
+                                            <strong>Trailer:</strong> <a href="https://www.youtube.com/watch?v={{movie.trailerId}}" target="_blank" style="color: #ff55a5;">Watch on YouTube</a>
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                    
+                                    {{#if movie.overview}}
+                                    <div class="movie-synopsis">
+                                        <h4>Plot Summary</h4>
+                                        <p>{{movie.overview}}</p>
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <!-- end movie info -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+                        <div class="row">
+                            <!-- trailer -->
+                            <div class="col-12">
+                                {{#if movie.trailerId}}
+                                <div class="trailer-section">
+                                    <h3>Official Trailer</h3>
+                                    <div class="trailer-wrapper">
+                                        <iframe 
+                                            src="https://www.youtube.com/embed/{{movie.trailerId}}?controls=1&showinfo=0&rel=0&modestbranding=1"
+                                            allowfullscreen
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            title="{{movie.title}} Trailer"
+                                            style="width: 100%; height: 450px; border: none; border-radius: 10px;">
+                                        </iframe>
+                                    </div>
+                                    <p style="margin-top: 20px; color: #ccc;">
+                                        <a href="https://www.youtube.com/watch?v={{movie.trailerId}}" target="_blank" style="color: #ff55a5;">
+                                            <i class="icon ion-logo-youtube"></i> Watch on YouTube
+                                        </a>
+                                    </p>
+                                </div>
+                                {{else}}
+                                <div class="no-trailer">
+                                    <h3>Trailer</h3>
+                                    <p>No trailer available for this movie yet.</p>
+                                    <a href="/movies/{{movie._id}}/watch" class="btn btn--form">Find Trailer</a>
+                                </div>
+                                {{/if}}
+                            </div>
+                            <!-- end trailer -->
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
+                        <!-- movie gallery -->
+                        <div class="gallery" itemscope>
+                            <div class="row">
+                                <!-- gallery item -->
+                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
+                                    {{#if movie.posterPath}}
+                                        <a href="https://image.tmdb.org/t/p/original{{movie.posterPath}}" itemprop="contentUrl" data-size="1920x1280">
+                                            <img src="https://image.tmdb.org/t/p/w500{{movie.posterPath}}" itemprop="thumbnail" alt="{{movie.title}} Poster" />
+                                        </a>
+                                        <figcaption itemprop="caption description">{{movie.title}} - Poster chính thức</figcaption>
+                                    {{else}}
+                                        <a href="/img/covers/cover.jpg" itemprop="contentUrl" data-size="1920x1280">
+                                            <img src="/img/covers/cover.jpg" itemprop="thumbnail" alt="{{movie.title}}" />
+                                        </a>
+                                        <figcaption itemprop="caption description">{{movie.title}} - Hình ảnh</figcaption>
+                                    {{/if}}
+                                </figure>
+                                <!-- end gallery item -->
+                            </div>
+                        </div>
+                        <!-- end movie gallery -->
+                    </div>
+                </div>
+                <!-- end content tabs -->
+            </div>
+
+            <!-- sidebar -->
+            <div class="col-12 col-lg-4 col-xl-4">
+                <div class="row">
+                    <!-- section title -->
+                    <div class="col-12">
+                        <h2 class="section__title section__title--sidebar">You may also like...</h2>
+                    </div>
+                    <!-- end section title -->
+
+                    <!-- Placeholder for related movies -->
+                    <div class="col-6 col-sm-4 col-lg-6">
+                        <div class="card">
+                            <div class="card__cover">
+                                <img src="/img/covers/cover.jpg" alt="">
+                                <a href="/" class="card__play">
+                                    <i class="icon ion-ios-play"></i>
+                                </a>
+                            </div>
+                            <div class="card__content">
+                                <h3 class="card__title"><a href="/">Discover More Movies</a></h3>
+                                <span class="card__category">
+                                    <a href="/">Home</a>
+                                </span>
+                                <span class="card__rate"><i class="icon ion-ios-star"></i>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+            </div>
+            <!-- end sidebar -->
+        </div>
+    </div>
+</section>
+<!-- end content -->
+
+<style>
+.movie-info-detailed {
+    background: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.movie-info-detailed h3 {
+    color: #ff55a5;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.info-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: #ccc;
+}
+
+.info-item strong {
+    color: #fff;
+    margin-right: 10px;
+}
+
+.movie-synopsis h4 {
+    color: #ff55a5;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.movie-synopsis p {
+    line-height: 1.7;
+    color: #ccc;
+}
+
+.trailer-section h3,
+.no-trailer h3 {
+    color: #ff55a5;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.trailer-wrapper {
+    background: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.no-trailer {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+}
+
+.no-trailer p {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 767px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .movie-info-detailed {
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+// Share functions
+function shareOnFacebook(title, movieId) {
+    const url = `http://localhost:5000/movies/${movieId}`;
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+}
+
+function shareOnTwitter(title, movieId) {
+    const url = `http://localhost:5000/movies/${movieId}`;
+    const text = `Watching movie: ${title}`;
+    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(shareUrl, '_blank', 'width=600,height=400');
+}
+
+console.log('🎬 Movie Details - {{movie.title}}');
+</script>
+</content>

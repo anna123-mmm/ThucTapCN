@@ -58,3 +58,29 @@
     </div>
 
 </div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-3">
+      <div class="card-body">
+        <button id="run-posters" class="btn btn-primary">Chạy fetch posters</button>
+        <button id="run-trailers" class="btn btn-secondary">Chạy fetch trailers</button>
+        <div id="admin-job-result" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('run-posters').addEventListener('click', async function(){
+  const r = await fetch('/admin/run-fetch-posters');
+  const j = await r.json();
+  document.getElementById('admin-job-result').innerText = JSON.stringify(j);
+});
+
+document.getElementById('run-trailers').addEventListener('click', async function(){
+  const r = await fetch('/admin/run-fetch-trailers');
+  const j = await r.json();
+  document.getElementById('admin-job-result').innerText = JSON.stringify(j);
+});
+</script>

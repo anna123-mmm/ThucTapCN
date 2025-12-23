@@ -5,37 +5,57 @@
                 <div class="sign__content">
 
                     <!-- authorization form -->
-                    <form action="/signin" method="POST" class="sign__form">
+                    <form action="/signin" method="POST" class="sign__form" id="signinForm">
 
                         <a href="/" class="sign__logo">
                             <img src="img/logo.svg" alt="">
                         </a>
 
+                        <!-- Error Messages -->
                         {{#if error_message}}
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger sign__alert">
+                                <i class="icon ion-ios-close-circle"></i>
                                 {{error_message}}
                             </div>
                         {{/if}}
+                        
                         {{#if errors}}
                             {{#each errors}}
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger sign__alert">
+                                    <i class="icon ion-ios-close-circle"></i>
                                     {{message}}
                                 </div>
                             {{/each}}
                         {{/if}}
 
                         {{#if success_message}}
-                            <div class="alert alert-success">
+                            <div class="alert alert-success sign__alert">
+                                <i class="icon ion-ios-checkmark-circle"></i>
                                 {{success_message}}
                             </div>
                         {{/if}}
 
                         <div class="sign__group">
-                            <input type="text" class="sign__input" name="email" placeholder="Email">
+                            <input type="email" 
+                                   class="sign__input {{#if errors}}{{#each errors}}{{#if (eq message 'Email is required')}}sign__input--error{{/if}}{{/each}}{{/if}}" 
+                                   name="email" 
+                                   placeholder="Email Address"
+                                   value="{{email}}"
+                                   required>
+                            <span class="sign__input-icon">
+                                <i class="icon ion-ios-mail"></i>
+                            </span>
                         </div>
 
                         <div class="sign__group">
-                            <input type="password" class="sign__input" name="password" placeholder="Password">
+                            <input type="password" 
+                                   class="sign__input {{#if errors}}{{#each errors}}{{#if (eq message 'Password is required')}}sign__input--error{{/if}}{{/each}}{{/if}}" 
+                                   name="password" 
+                                   placeholder="Password"
+                                   required>
+                            <span class="sign__input-icon">
+                                <i class="icon ion-ios-lock"></i>
+                            </span>
                         </div>
 
                         <div class="sign__group sign__group--checkbox">
@@ -43,7 +63,12 @@
                             <label for="remember">Remember Me</label>
                         </div>
 
-                        <button class="sign__btn" type="submit">Sign in</button>
+                        <button class="sign__btn" type="submit">
+                            <span class="btn-text">Sign In</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="icon ion-ios-refresh"></i> Signing in...
+                            </span>
+                        </button>
 
                         <span class="sign__text">Don't have an account? <a href="/signup">Sign up!</a></span>
 
@@ -55,3 +80,138 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Enhanced Sign In Styles */
+.sign__alert {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    color: #28a745;
+}
+
+.sign__group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.sign__input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 18px;
+}
+
+.sign__input {
+    padding-right: 45px !important;
+}
+
+.sign__input--error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.sign__btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Form validation styles */
+.sign__input:invalid {
+    border-color: #dc3545;
+}
+
+.sign__input:valid {
+    border-color: #28a745;
+}
+
+.sign__input:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(255, 85, 165, 0.25);
+}
+</style>
+
+<script>
+// Form validation and UX improvements
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('signinForm');
+    const submitBtn = form.querySelector('.sign__btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    form.addEventListener('submit', function(e) {
+        // Show loading state
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-flex';
+        submitBtn.disabled = true;
+        
+        // Basic validation
+        const email = form.querySelector('input[name="email"]').value.trim();
+        const password = form.querySelector('input[name="password"]').value.trim();
+        
+        if (!email || !password) {
+            e.preventDefault();
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
+            
+            // Show error
+            showError('Please fill in all required fields');
+            return false;
+        }
+        
+        // Email validation
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
+            
+            showError('Please enter a valid email address');
+            return false;
+        }
+    });
+    
+    function showError(message) {
+        // Remove existing error alerts
+        const existingAlerts = document.querySelectorAll('.sign__alert');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        // Create new error alert
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger sign__alert';
+        errorDiv.innerHTML = `<i class="icon ion-ios-close-circle"></i>${message}`;
+        
+        // Insert after logo
+        const logo = document.querySelector('.sign__logo');
+        logo.parentNode.insertBefore(errorDiv, logo.nextSibling);
+    }
+});
+</script>

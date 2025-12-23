@@ -4,7 +4,7 @@
 
             {{#if user}}
                 <div class="header__welcome" style="font-size: 12px; color: #ffffff; text-align: right; margin-top: 5px;">
-                    Xin chào, {{user.name}}!
+                    Hello, {{user.name}}!
                 </div>
             {{/if}}
 
@@ -13,7 +13,7 @@
                     <div class="header__content">
                         <!-- header logo -->
                         <a href="/" class="header__logo">
-                            <img src="img/logo.svg" alt="">
+                            <img src="/img/logo.svg" alt="">
                         </a>
                         <!-- end header logo -->
 
@@ -21,33 +21,38 @@
                         <ul class="header__nav">
                             <!-- dropdown -->
                             <li class="header__nav-item">
-                                <a class="dropdown-toggle header__nav-link" href="/" role="button" id="dropdownMenuHome">Home</a>
-
-
+                                <a class="header__nav-link" href="/">Home</a>
                             </li>
                             <!-- end dropdown -->
 
-                            <!-- dropdown -->
+                            <!-- genres dropdown -->
                             <li class="header__nav-item">
-                                <a class="dropdown-toggle header__nav-link" href="/details2" role="button" id="dropdownMenuCatalog">Catalog</a>
-
+                                <a class="header__nav-link dropdown-toggle" href="#" role="button" id="genresDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Genres
+                                </a>
+                                <div class="dropdown-menu header__dropdown-menu" aria-labelledby="genresDropdown">
+                                    <a class="dropdown-item" href="/">All Genres</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/?genre=Action">Action</a>
+                                    <a class="dropdown-item" href="/?genre=Adventure">Adventure</a>
+                                    <a class="dropdown-item" href="/?genre=Comedy">Comedy</a>
+                                    <a class="dropdown-item" href="/?genre=Crime">Crime</a>
+                                    <a class="dropdown-item" href="/?genre=Drama">Drama</a>
+                                    <a class="dropdown-item" href="/?genre=Horror">Horror</a>
+                                    <a class="dropdown-item" href="/?genre=Romance">Romance</a>
+                                    <a class="dropdown-item" href="/?genre=Sci-Fi">Sci-Fi</a>
+                                    <a class="dropdown-item" href="/?genre=Thriller">Thriller</a>
+                                </div>
                             </li>
-                            <!-- end dropdown -->
+                            <!-- end genres dropdown -->
 
                             <li class="header__nav-item">
-                                <a href="/pricing" class="header__nav-link">Pricing Plan</a>
+                                <a href="/pricing" class="header__nav-link">Pricing</a>
                             </li>
 
                             <li class="header__nav-item">
                                 <a href="/about" class="header__nav-link">About</a>
                             </li>
-                            <li class="header__nav-item">
-                                <a href="/test" class="header__nav-link">Test</a>
-                            </li>
-
-                            <!-- dropdown -->
-
-                            <!-- end dropdown -->
                         </ul>
                         <!-- end header nav -->
 
@@ -84,14 +89,13 @@
         </div>
     </div>
     <!-- header search -->
-    <form action="#" class="header__search">
+    <form action="/" method="get" class="header__search">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="header__search-content">
-                        <input type="text" placeholder="Search for a movie, TV Series that you are looking for">
-
-                        <button type="button">search</button>
+                        <input type="text" name="search" placeholder="Search movies, actors, genres..." autocomplete="off">
+                        <button type="submit">Search</button>
                     </div>
                 </div>
             </div>
@@ -99,3 +103,39 @@
     </form>
     <!-- end header search -->
 </header>
+
+<style>
+/* CSS cho genres dropdown */
+.header__dropdown-menu {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    padding: 10px 0 !important;
+    margin-top: 10px !important;
+    min-width: 160px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.header__dropdown-menu .dropdown-item {
+    color: #ffffff !important;
+    padding: 8px 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.header__dropdown-menu .dropdown-item:hover {
+    background: #ff55a5 !important;
+    color: #ffffff !important;
+}
+
+.header__dropdown-menu .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    margin: 5px 0 !important;
+}
+
+.header__nav-link.dropdown-toggle::after {
+    margin-left: 8px;
+    color: #ffffff;
+}
+</style>

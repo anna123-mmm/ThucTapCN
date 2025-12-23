@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{movie.title}} - Trailer | FlixGo</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/css/ionicons.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .watch-container {
+            padding: 40px 20px;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .watch-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .watch-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff55a5 0%, #ff8f71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .watch-subtitle {
+            color: #999;
+            font-size: 1.1rem;
+        }
+        
+        .watch-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .video-section {
+            width: 100%;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #333;
+            border-top: 5px solid #ff55a5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-section {
+            width: 100%;
+        }
+        
+        .movie-poster {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .movie-poster img {
+            max-width: 100%;
+            width: 300px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        
+        .movie-info {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ff55a5;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        
+        .info-item i {
+            margin-right: 12px;
+            color: #ff55a5;
+            width: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .movie-description {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .description-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ff55a5;
+        }
+        
+        .description-text {
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #ff55a5 0%, #ff8f71 100%);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ff8f71 0%, #ff55a5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 85, 165, 0.4);
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #ff6b6b;
+        }
+        
+        .error-message i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .not-found {
+            text-align: center;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .not-found i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+            color: #666;
+        }
+        
+        .external-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .external-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .external-link:hover {
+            background: #ff55a5;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        .video-status {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        @media (max-width: 768px) {
+            .watch-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .watch-title {
+                font-size: 2rem;
+            }
+            
+            .movie-poster img {
+                width: 250px;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+            
+            .watch-container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="watch-container">
+        <div class="watch-header">
+            <h1 class="watch-title">{{movie.title}}</h1>
+            <p class="watch-subtitle">{{#if movie.year}}({{movie.year}}){{/if}} - Trailer</p>
+        </div>
+        
+        <div class="watch-content">
+            <div class="video-section">
+                <div id="video-container" class="video-container">
+                    {{#if movie.trailerId}}
+                        <iframe
+                            src="https://www.youtube.com/embed/{{movie.trailerId}}?autoplay=0&controls=1&showinfo=0&rel=0&modestbranding=1"
+                            allowfullscreen
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            title="{{movie.title}} Trailer">
+                        </iframe>
+                    {{else}}
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Finding trailer...</p>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            
+            <div class="info-section">
+                {{#if movie.posterPath}}
+                <div class="movie-poster">
+                    <img src="https://image.tmdb.org/t/p/w500{{movie.posterPath}}" 
+                         alt="{{movie.title}}" 
+                         onerror="this.style.display='none'">
+                </div>
+                {{/if}}
+                
+                <div class="movie-info">
+                    <h3 class="info-title">Movie Information</h3>
+                    <div class="info-item">
+                        <i class="icon ion-md-calendar"></i>
+                        <span>{{#if movie.year}}{{movie.year}}{{else}}Unknown{{/if}}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="icon ion-md-pricetags"></i>
+                        <span>
+                            {{#if movie.genres}}
+                                {{join movie.genres ", "}}
+                            {{else}}
+                                Uncategorized
+                            {{/if}}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <i class="icon ion-md-star"></i>
+                        <span>{{#if movie.rating}}{{movie.rating}}/10{{else}}Not rated{{/if}}</span>
+                    </div>
+                    {{#if movie.releaseDate}}
+                    <div class="info-item">
+                        <i class="icon ion-md-film"></i>
+                        <span>{{movie.releaseDate}}</span>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                {{#if movie.overview}}
+                <div class="movie-description">
+                    <h3 class="description-title">Plot Summary</h3>
+                    <p class="description-text">{{movie.overview}}</p>
+                </div>
+                {{/if}}
+                
+                <div class="action-buttons">
+                    <a href="/movies/{{movie._id}}" class="btn btn-primary">
+                        <i class="icon ion-ios-arrow-back"></i>
+                        Movie Details
+                    </a>
+                    <a href="/" class="btn btn-secondary">
+                        <i class="icon ion-ios-home"></i>
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    console.log('🎬 Movie Watch Page - {{movie.title}}');
+    console.log('📊 Movie Data:', {
+        id: '{{movie._id}}',
+        title: '{{movie.title}}',
+        trailerId: '{{movie.trailerId}}',
+        posterPath: '{{movie.posterPath}}'
+    });
+    
+    {{#unless movie.trailerId}}
+    console.log('🔍 No trailer ID found, fetching from API...');
+    
+    (async function(){
+        try {
+            const response = await fetch('/movies/{{movie._id}}/trailer');
+            const data = await response.json();
+            const container = document.getElementById('video-container');
+            
+            console.log('📡 API Response:', data);
+            
+            if (data.success && data.videoId) {
+                console.log('✅ Trailer found:', data.videoId);
+                container.innerHTML = `
+                    <iframe
+                        src="https://www.youtube.com/embed/${encodeURIComponent(data.videoId)}?autoplay=0&controls=1&showinfo=0&rel=0&modestbranding=1"
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        title="{{movie.title}} Trailer">
+                    </iframe>
+                `;
+                
+                // Update status
+                document.querySelector('.video-status').innerHTML = '✅ Trailer loaded - ID: ' + data.videoId;
+            } else {
+                console.log('❌ No trailer found');
+                const movieTitle = encodeURIComponent('{{movie.title}}');
+                container.innerHTML = `
+                    <div class="not-found">
+                        <i class="icon ion-ios-sad"></i>
+                        <p>No trailer found for this movie</p>
+                        <div class="external-links">
+                            <a href="https://www.youtube.com/results?search_query=${movieTitle}%20trailer" target="_blank" class="external-link">
+                                <i class="icon ion-logo-youtube"></i>
+                                Search on YouTube
+                            </a>
+                            <a href="https://www.themoviedb.org/search?query=${movieTitle}" target="_blank" class="external-link">
+                                <i class="icon ion-md-search"></i>
+                                Search on TMDB
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                // Update status
+                document.querySelector('.video-status').innerHTML = '❌ No trailer found';
+            }
+        } catch (error) {
+            console.error('💥 Error loading trailer:', error);
+            document.getElementById('video-container').innerHTML = `
+                <div class="error-message">
+                    <i class="icon ion-ios-warning"></i>
+                    <p>Error loading trailer</p>
+                    <p style="font-size: 0.9rem; color: #999;">Please try again later</p>
+                </div>
+            `;
+            
+            // Update status
+            document.querySelector('.video-status').innerHTML = '💥 Error loading trailer';
+        }
+    })();
+    {{/unless}}
+    </script>
+</body>
+</html>
+</content>
