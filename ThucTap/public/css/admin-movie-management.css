@@ -1,0 +1,364 @@
+/* Admin Movie Management Styles */
+
+/* Image thumbnail styles */
+.img-thumbnail {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.img-thumbnail:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Image error handling */
+.image-error {
+    border: 1px dashed #dc3545;
+    border-radius: 0.25rem;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* Movie row styles */
+.movie-row {
+    transition: background-color 0.2s ease;
+}
+
+.movie-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* Loading state for images */
+img[data-movie-image] {
+    transition: opacity 0.3s ease;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.7em;
+}
+
+/* Movie management specific styles */
+.movie-management-container {
+    padding: 20px 0;
+}
+
+.movie-image-container {
+    display: flex;
+    gap: 4px;
+    align-items: start;
+}
+
+.movie-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.movie-poster-placeholder {
+    width: 40px;
+    height: 60px;
+    background-color: #6c757d;
+    color: white;
+}
+
+.movie-backdrop-placeholder {
+    width: 40px;
+    height: 23px;
+    background-color: #6c757d;
+    color: white;
+    font-size: 8px;
+}
+
+/* Movie info styles */
+.movie-info {
+    line-height: 1.4;
+}
+
+.movie-title {
+    font-weight: 600;
+    color: #212529;
+}
+
+.movie-overview {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.movie-id {
+    color: #17a2b8;
+    font-size: 0.75rem;
+    font-family: monospace;
+}
+
+/* Genre badges */
+.genre-badge {
+    font-size: 0.7rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Rating badge */
+.rating-badge {
+    font-size: 0.75rem;
+}
+
+/* Action buttons */
+.action-buttons .btn {
+    margin-right: 0.25rem;
+}
+
+.action-buttons .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 1rem;
+}
+
+.pagination .page-link {
+    color: #007bff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Form styles for create/edit */
+.movie-form-container {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.movie-form-container h6 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Image preview styles */
+.image-preview-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.image-preview {
+    border: 2px dashed #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.image-preview:hover {
+    border-color: #007bff;
+}
+
+.image-preview img {
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.image-preview-placeholder {
+    background-color: #6c757d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    margin: 0 auto;
+}
+
+.image-preview-placeholder.movie-poster-placeholder {
+    width: 120px;
+    height: 180px;
+}
+
+.image-preview-placeholder.movie-backdrop-placeholder {
+    width: 120px;
+    height: 68px;
+}
+
+/* TMDB search styles */
+.tmdb-search-container {
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.tmdb-search-container .form-control {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tmdb-search-container .btn {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tmdb-results {
+    background: rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.tmdb-movie-card {
+    background: rgba(255,255,255,0.9);
+    color: #212529;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.tmdb-movie-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .img-thumbnail {
+        width: 30px !important;
+        height: auto !important;
+    }
+    
+    .movie-poster-placeholder {
+        width: 30px;
+        height: 45px;
+        font-size: 8px;
+    }
+    
+    .movie-backdrop-placeholder {
+        width: 30px;
+        height: 17px;
+        font-size: 6px;
+    }
+    
+    .action-buttons .btn-sm {
+        padding: 0.125rem 0.25rem;
+        font-size: 0.7rem;
+    }
+    
+    .movie-id {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .movie-management-container {
+        padding: 10px 0;
+    }
+    
+    .card-header h4 {
+        font-size: 1.1rem;
+    }
+    
+    .tmdb-search-container {
+        padding: 1rem;
+    }
+    
+    .movie-form-container {
+        padding: 1rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .action-buttons,
+    .pagination,
+    .tmdb-search-container {
+        display: none !important;
+    }
+    
+    .img-thumbnail:hover {
+        transform: none;
+    }
+    
+    .movie-row:hover {
+        background-color: transparent;
+    }
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+    .movie-row:hover {
+        background-color: #2d3748;
+    }
+    
+    .movie-title {
+        color: #e2e8f0;
+    }
+    
+    .movie-overview {
+        color: #a0aec0;
+    }
+}
+
+/* Animation for loading states */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.movie-row {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Focus styles for accessibility */
+.img-thumbnail:focus,
+.btn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

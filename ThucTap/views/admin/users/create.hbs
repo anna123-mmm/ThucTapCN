@@ -1,0 +1,269 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Thêm người dùng mới</h4>
+                    <a href="/admin/users" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Quay lại danh sách
+                    </a>
+                </div>
+                <div class="card-body">
+                    {{#if error_message}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle"></i> {{error_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+
+                    <form action="/admin/users/create" method="POST" id="createUserForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">
+                                                Họ và tên <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="name" 
+                                                   name="name" 
+                                                   placeholder="Nhập họ và tên"
+                                                   required
+                                                   maxlength="100">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                Địa chỉ email <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="email" 
+                                                   class="form-control" 
+                                                   id="email" 
+                                                   name="email" 
+                                                   placeholder="Nhập địa chỉ email"
+                                                   required
+                                                   maxlength="255">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">
+                                                Mật khẩu <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <input type="password" 
+                                                       class="form-control" 
+                                                       id="password" 
+                                                       name="password" 
+                                                       placeholder="Nhập mật khẩu"
+                                                       required
+                                                       minlength="5">
+                                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <div class="form-text">Tối thiểu 5 ký tự</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="role" class="form-label">Vai trò</label>
+                                            <select class="form-select" id="role" name="role">
+                                                <option value="user">Người dùng</option>
+                                                <option value="admin">Quản trị viên</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Số điện thoại</label>
+                                            <input type="tel" 
+                                                   class="form-control" 
+                                                   id="phone" 
+                                                   name="phone" 
+                                                   placeholder="Nhập số điện thoại">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="dateOfBirth" class="form-label">Ngày sinh</label>
+                                            <input type="date" 
+                                                   class="form-control" 
+                                                   id="dateOfBirth" 
+                                                   name="dateOfBirth">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Địa chỉ</label>
+                                    <textarea class="form-control" 
+                                              id="address" 
+                                              name="address" 
+                                              rows="3"
+                                              placeholder="Nhập địa chỉ"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               id="status" 
+                                               name="status" 
+                                               value="true" 
+                                               checked>
+                                        <label class="form-check-label" for="status">
+                                            Người dùng hoạt động
+                                        </label>
+                                    </div>
+                                    <div class="form-text">Bỏ chọn để tạo người dùng không hoạt động</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Hướng dẫn người dùng</h6>
+                                        <ul class="list-unstyled small">
+                                            <li><i class="fa fa-check text-success"></i> Sử dụng tên thật</li>
+                                            <li><i class="fa fa-check text-success"></i> Địa chỉ email hợp lệ</li>
+                                            <li><i class="fa fa-check text-success"></i> Mật khẩu mạnh</li>
+                                            <li><i class="fa fa-check text-success"></i> Xác minh số điện thoại</li>
+                                            <li><i class="fa fa-check text-success"></i> Hồ sơ đầy đủ</li>
+                                        </ul>
+                                        
+                                        <h6 class="card-title mt-3">Quyền vai trò</h6>
+                                        <div class="small">
+                                            <div class="mb-2">
+                                                <strong>Người dùng:</strong>
+                                                <ul class="mb-0">
+                                                    <li>Xem phim</li>
+                                                    <li>Tạo danh sách phát</li>
+                                                    <li>Đánh giá & bình luận</li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <strong>Quản trị viên:</strong>
+                                                <ul class="mb-0">
+                                                    <li>Tất cả quyền người dùng</li>
+                                                    <li>Quản lý nội dung</li>
+                                                    <li>Quản lý người dùng</li>
+                                                    <li>Cài đặt hệ thống</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/admin/users" class="btn btn-secondary">
+                                        <i class="fa fa-times"></i> Hủy
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-save"></i> Tạo người dùng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('createUserForm');
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    
+    // Toggle password visibility
+    togglePasswordBtn.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        const icon = this.querySelector('i');
+        icon.className = type === 'password' ? 'fa fa-eye' : 'fa fa-eye-slash';
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        
+        if (!name) {
+            e.preventDefault();
+            alert('Please enter a full name');
+            document.getElementById('name').focus();
+            return false;
+        }
+        
+        if (!email) {
+            e.preventDefault();
+            alert('Please enter an email address');
+            document.getElementById('email').focus();
+            return false;
+        }
+        
+        if (!password || password.length < 5) {
+            e.preventDefault();
+            alert('Password must be at least 5 characters long');
+            document.getElementById('password').focus();
+            return false;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            alert('Please enter a valid email address');
+            document.getElementById('email').focus();
+            return false;
+        }
+    });
+    
+    // Real-time email validation
+    document.getElementById('email').addEventListener('blur', function() {
+        const email = this.value.trim();
+        if (email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        }
+    });
+    
+    // Real-time password validation
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        if (password.length > 0) {
+            if (password.length < 5) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        }
+    });
+});
+</script>

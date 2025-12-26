@@ -1,22 +1,34 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const UserSchema = new Schema({
+const CategorySchema = new Schema({
     name: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
     },
     image: {
-        type:String,
-        required:true,
+        type: String,
+        required: false,
+        default: ''
+    },
+    description: {
+        type: String,
+        default: ''
     },
     status: {
         type: Boolean,
-        required: false,
-
+        default: true
     },
-
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
 });
-//const User = mongoose.model('User', userSchema);
-//module.exports = User;
-module.exports = mongoose.model('category', UserSchema);
+
+module.exports = mongoose.model('category', CategorySchema);

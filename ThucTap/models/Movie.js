@@ -10,6 +10,9 @@ const MovieSchema = new mongoose.Schema({
   trailerId: String,
   tmdbId: String, // nếu có từ TMDB CSV
   posterPath: String, // TMDB poster_path (e.g. /abc123.jpg)
+  poster: String, // Full poster URL
+  image: String, // Additional image URL (backdrop, still, etc.)
+  images: [String], // Array of additional image URLs
 }, { timestamps: true });
 
 module.exports = mongoose.model('Movie', MovieSchema);

@@ -1,0 +1,226 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Quản lý phim</h4>
+                    <div class="d-flex gap-2">
+                        <a href="/admin/product/create" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Thêm Phim Mới
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{#if success_message}}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check-circle"></i> {{success_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+                    
+                    {{#if error_message}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle"></i> {{error_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+
+                    <div class="row mb-3">
+                        <div class="col-md-12 text-end">
+                            <small class="text-muted">Tổng số phim: {{totalMovies}}</small>
+                        </div>
+                    </div>
+
+                    {{#if movies}}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Hình Ảnh</th>
+                                        <th scope="col">Tiêu Đề</th>
+                                        <th scope="col">Năm</th>
+                                        <th scope="col">Thể Loại</th>
+                                        <th scope="col">Đánh Giá</th>
+                                        <th scope="col">Trailer</th>
+                                        <th scope="col">Hành Động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each movies}}
+                                        <tr data-movie-id="{{_id}}">
+                                            <th scope="row">{{stt}}</th>
+                                            <td>
+                                                <div class="d-flex gap-1">
+                                                    {{#if poster}}
+                                                        <img src="{{poster}}" alt="{{title}}" class="img-thumbnail" width="40" height="60" style="object-fit: cover;" title="Poster">
+                                                    {{else if posterPath}}
+                                                        <img src="https://image.tmdb.org/t/p/w500{{posterPath}}" alt="{{title}}" class="img-thumbnail" width="40" height="60" style="object-fit: cover;" title="Poster">
+                                                    {{else}}
+                                                        <div class="bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 60px; font-size: 10px;" title="No Poster">
+                                                            📽️
+                                                        </div>
+                                                    {{/if}}
+                                                    
+                                                    {{#if image}}
+                                                        <img src="{{image}}" alt="{{title}} backdrop" class="img-thumbnail" width="40" height="23" style="object-fit: cover;" title="Backdrop">
+                                                    {{/if}}
+                                                    
+                                                    {{#if images}}
+                                                        {{#if images.length}}
+                                                            <span class="badge bg-info align-self-start" title="{{images.length}} additional images">+{{images.length}}</span>
+                                                        {{/if}}
+                                                    {{/if}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>{{title}}</strong>
+                                                {{#if overview}}
+                                                    <br><small class="text-muted">{{#if (gt overview.length 100)}}{{substring overview 0 100}}...{{else}}{{overview}}{{/if}}</small>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">{{year}}</span>
+                                            </td>
+                                            <td>
+                                                {{#if genres}}
+                                                    {{#each genres}}
+                                                        <span class="badge bg-secondary me-1">{{this}}</span>
+                                                    {{/each}}
+                                                {{else}}
+                                                    <span class="text-muted">Không có thể loại</span>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                {{#if rating}}
+                                                    <span class="badge bg-warning">⭐ {{rating}}</span>
+                                                {{else}}
+                                                    <span class="text-muted">Không có đánh giá</span>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                {{#if trailerId}}
+                                                    <a href="https://www.youtube.com/watch?v={{trailerId}}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa fa-play"></i>
+                                                    </a>
+                                                {{else}}
+                                                    <span class="text-muted">Không có trailer</span>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="/movies/{{_id}}" target="_blank" class="btn btn-sm btn-outline-info" title="Xem">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="/admin/product/edit/{{_id}}" class="btn btn-sm btn-outline-warning" title="Sửa">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" 
+                                                            class="btn btn-sm btn-outline-danger delete-movie" 
+                                                            data-id="{{_id}}" 
+                                                            data-title="{{title}}"
+                                                            title="Xóa">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {{#if totalPages}}
+                            {{#if totalPages}}
+                                <nav aria-label="Movie pagination">
+                                    <ul class="pagination justify-content-center">
+                                        {{#if currentPage}}
+                                            {{#unless (eq currentPage 1)}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="/admin/product?page={{math currentPage '-' 1}}">Trước</a>
+                                                </li>
+                                            {{/unless}}
+                                        {{/if}}
+                                        
+                                        {{#each (range 1 6)}}
+                                            {{#if (lte this ../totalPages)}}
+                                                <li class="page-item {{#if (eq this ../currentPage)}}active{{/if}}">
+                                                    <a class="page-link" href="/admin/product?page={{this}}">{{this}}</a>
+                                                </li>
+                                            {{/if}}
+                                        {{/each}}
+                                        
+                                        {{#if currentPage}}
+                                            {{#unless (eq currentPage totalPages)}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="/admin/product?page={{math currentPage '+' 1}}">Sau</a>
+                                                </li>
+                                            {{/unless}}
+                                        {{/if}}
+                                    </ul>
+                                </nav>
+                            {{/if}}
+                        {{/if}}
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                Hiển thị {{movies.length}} phim (Tổng: {{totalMovies}})
+                            </small>
+                        </div>
+                    {{else}}
+                        <div class="text-center py-5"></div>
+                            <i class="fa fa-film fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Không tìm thấy phim nào</h5>
+                            <p class="text-muted">Bắt đầu bằng cách thêm phim đầu tiên</p>
+                            <a href="/admin/product/create" class="btn btn-primary">
+                                <i class="fa fa-plus"></i> Thêm Phim Đầu Tiên
+                            </a>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa phim "<span id="movieTitle"></span>" không?</p>
+                <p class="text-danger"><small>Hành động này không thể hoàn tác.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle delete confirmation
+    document.querySelectorAll('.delete-movie').forEach(button => {
+        button.addEventListener('click', function() {
+            const movieId = this.dataset.id;
+            const movieTitle = this.dataset.title;
+            
+            document.getElementById('movieTitle').textContent = movieTitle;
+            document.getElementById('deleteForm').action = `/admin/product/${movieId}?_method=DELETE`;
+            
+            // Use Bootstrap 4 modal syntax
+            $('#deleteModal').modal('show');
+        });
+    });
+});
+</script>

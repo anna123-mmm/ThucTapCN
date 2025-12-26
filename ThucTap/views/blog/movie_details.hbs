@@ -1,7 +1,7 @@
 <!-- details -->
 <section class="section details">
     <!-- details background -->
-    <div class="details__bg" data-bg="{{#if movie.posterPath}}https://image.tmdb.org/t/p/original{{movie.posterPath}}{{else}}/img/home/home__bg.jpg{{/if}}"></div>
+    <div class="details__bg" data-bg="{{#if movie.image}}{{movie.image}}{{else if movie.posterPath}}https://image.tmdb.org/t/p/original{{movie.posterPath}}{{else}}/img/home/home__bg.jpg{{/if}}"></div>
     <!-- end details background -->
 
     <!-- details content -->
@@ -20,7 +20,9 @@
                         <!-- card cover -->
                         <div class="col-12 col-sm-4 col-md-4 col-lg-3 col-xl-3">
                             <div class="card__cover">
-                                {{#if movie.posterPath}}
+                                {{#if movie.poster}}
+                                    <img src="{{movie.poster}}" alt="{{movie.title}}">
+                                {{else if movie.posterPath}}
                                     <img src="https://image.tmdb.org/t/p/w500{{movie.posterPath}}" alt="{{movie.title}}">
                                 {{else}}
                                     <img src="/img/covers/cover.jpg" alt="{{movie.title}}">
@@ -273,16 +275,21 @@
                             <div class="row">
                                 <!-- gallery item -->
                                 <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    {{#if movie.posterPath}}
+                                    {{#if movie.poster}}
+                                        <a href="{{movie.poster}}" itemprop="contentUrl" data-size="1920x1280">
+                                            <img src="{{movie.poster}}" itemprop="thumbnail" alt="{{movie.title}} Poster" />
+                                        </a>
+                                        <figcaption itemprop="caption description">{{movie.title}} - Official Poster</figcaption>
+                                    {{else if movie.posterPath}}
                                         <a href="https://image.tmdb.org/t/p/original{{movie.posterPath}}" itemprop="contentUrl" data-size="1920x1280">
                                             <img src="https://image.tmdb.org/t/p/w500{{movie.posterPath}}" itemprop="thumbnail" alt="{{movie.title}} Poster" />
                                         </a>
-                                        <figcaption itemprop="caption description">{{movie.title}} - Poster chính thức</figcaption>
+                                        <figcaption itemprop="caption description">{{movie.title}} - Official Poster</figcaption>
                                     {{else}}
                                         <a href="/img/covers/cover.jpg" itemprop="contentUrl" data-size="1920x1280">
                                             <img src="/img/covers/cover.jpg" itemprop="thumbnail" alt="{{movie.title}}" />
                                         </a>
-                                        <figcaption itemprop="caption description">{{movie.title}} - Hình ảnh</figcaption>
+                                        <figcaption itemprop="caption description">{{movie.title}} - Image</figcaption>
                                     {{/if}}
                                 </figure>
                                 <!-- end gallery item -->

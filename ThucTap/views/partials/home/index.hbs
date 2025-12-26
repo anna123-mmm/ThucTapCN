@@ -39,11 +39,13 @@
                           <!-- card -->
                           <div class="card card--big">
                               <div class="card__cover">
-                                  {{#if posterPath}}
-                                  <img src="https://image.tmdb.org/t/p/w500{{posterPath}}" alt="{{title}}">
-                                {{else}}
-                                  <img src="img/covers/cover.jpg" alt="{{title}}">
-                                {{/if}}
+                                  {{#if poster}}
+                                      <img src="{{poster}}" alt="{{title}}">
+                                  {{else if posterPath}}
+                                      <img src="https://image.tmdb.org/t/p/w500{{posterPath}}" alt="{{title}}">
+                                  {{else}}
+                                      <img src="img/covers/cover.jpg" alt="{{title}}">
+                                  {{/if}}
                                   <a href="/movies/{{_id}}/watch" class="card__play">
                                       <i class="icon ion-ios-play"></i>
                                   </a>
@@ -112,7 +114,9 @@
                 <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2">
                     <div class="card">
                         <div class="card__cover">
-                            {{#if posterPath}}
+                            {{#if poster}}
+                                <img src="{{poster}}" alt="{{title}}">
+                            {{else if posterPath}}
                                 <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
                             {{else}}
                                 <img src="/img/covers/cover.jpg" alt="{{title}}">
@@ -192,7 +196,9 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    {{#if posterPath}}
+                                    {{#if poster}}
+                                        <img src="{{poster}}" alt="{{title}}">
+                                    {{else if posterPath}}
                                         <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
                                     {{else}}
                                         <img src="img/covers/cover.jpg" alt="{{title}}">
@@ -231,7 +237,9 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    {{#if posterPath}}
+                                    {{#if poster}}
+                                        <img src="{{poster}}" alt="{{title}}">
+                                    {{else if posterPath}}
                                         <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
                                     {{else}}
                                         <img src="img/covers/cover.jpg" alt="{{title}}">
@@ -270,7 +278,9 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    {{#if posterPath}}
+                                    {{#if poster}}
+                                        <img src="{{poster}}" alt="{{title}}">
+                                    {{else if posterPath}}
                                         <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
                                     {{else}}
                                         <img src="img/covers/cover.jpg" alt="{{title}}">
@@ -309,7 +319,9 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    {{#if posterPath}}
+                                    {{#if poster}}
+                                        <img src="{{poster}}" alt="{{title}}">
+                                    {{else if posterPath}}
                                         <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
                                     {{else}}
                                         <img src="img/covers/cover.jpg" alt="{{title}}">

@@ -45,6 +45,9 @@ app.engine(
             lt: function(a, b) {
                 return a < b;
             },
+            lte: function(a, b) {
+                return a <= b;
+            },
             // Ceiling function
             ceil: function(value) {
                 return Math.ceil(value);
@@ -72,6 +75,42 @@ app.engine(
             // Encode URI component
             encodeURIComponent: function(str) {
                 return encodeURIComponent(str || '');
+            },
+            // Check if array includes value
+            includes: function(array, value) {
+                if (Array.isArray(array)) {
+                    return array.includes(value);
+                }
+                return false;
+            },
+            // Substring helper
+            substring: function(str, start, end) {
+                if (typeof str === 'string') {
+                    return str.substring(start, end);
+                }
+                return str;
+            },
+            // Add and subtract helpers for pagination
+            add: function(a, b) {
+                return a + b;
+            },
+            subtract: function(a, b) {
+                return a - b;
+            },
+            // Format date helper
+            formatDate: function(date) {
+                if (!date) return 'N/A';
+                return new Date(date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            },
+            // JSON helper for passing data to JavaScript
+            json: function(context) {
+                return JSON.stringify(context);
             }
         }
     })
@@ -100,9 +139,8 @@ app.use((req, res, next) => {
 
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
-var usersRouter = require('./routes/users');
-var categoryRouter = require('./routes/category');
-var moviesRouter = require('./routes/movies');
+var movieManagementRouter = require('./routes/movieManagement');
+var userManagementRouter = require('./routes/userManagement');
 
 console.log(path.join(__dirname, 'views', 'layouts'));
 // view engine setup
@@ -117,7 +155,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
 app.use('/', indexRouter);
-app.use('/admin/category', categoryRouter);
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
@@ -143,24 +180,28 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/node') // No ca
 
 
 app.post('/login', (req, res) => {
-    User.findOne({email: req.body.email}).then((user) => {
+    User.findOne({email: req.body.email.toLowerCase()}).then((user) => {
         if (user) {
-            bcryptjs.compare(req.body.password,user.password,(err,matched)=>{
+            bcryptjs.compare(req.body.password, user.password, async (err, matched) => {
                 if(err) return err;
                 if(matched){
-                    //res.send("User was logged in");
-                    req.session.user =
-                        {
-                            id:user._id,
-                            email:user.email,
-                        };
+                    // Update last login time
+                    user.lastLogin = new Date();
+                    await user.save();
+                    
+                    req.session.user = {
+                        id: user._id,
+                        email: user.email,
+                        name: user.name,
+                        role: user.role
+                    };
                     res.redirect('/');
-                }else {
-                    res.send("Email hoac mat khau khong dung");
+                } else {
+                    res.send("Email or password is incorrect");
                 }
             });
-        }else{
-            res.send("User khong ton tai");
+        } else {
+            res.send("User does not exist");
         }
     })
 });
@@ -169,32 +210,36 @@ app.post('/signup', async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
-        // kiểm tra user đã tồn tại chưa
-        const existingUser = await User.findOne({ email });
+        // Check if user already exists
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
             return res.status(400).json({ message: "Email already registered" });
         }
 
-        // hash password
+        // Hash password
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password, salt);
 
         const newUser = new User({
-            name,
-            email,
-            password: hashedPassword
+            name: name.trim(),
+            email: email.toLowerCase().trim(),
+            password: hashedPassword,
+            role: 'user',
+            status: true
         });
 
         await newUser.save();
 
-        // trả về thông tin user (không trả password)
+        // Return user info (without password)
         const userData = {
             name: newUser.name,
-            email: newUser.email
+            email: newUser.email,
+            role: newUser.role
         };
 
-        res.status(201).json({ message: "User registered", user: userData });
+        res.status(201).json({ message: "User registered successfully", user: userData });
     } catch (err) {
+        console.error('Signup error:', err);
         res.status(500).json({ error: err.message });
     }
 });

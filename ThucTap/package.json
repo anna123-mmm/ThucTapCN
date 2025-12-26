@@ -7,7 +7,9 @@
     "dev": "nodemon ./bin/www",
     "import": "node scripts/importMovies.js",
     "sample": "node scripts/createSampleData.js",
-    "setup": "npm run sample && echo 'Setup completed! Run npm start to begin.'",
+    "import-categories": "node scripts/importGenres.js",
+    "sync-categories": "node scripts/syncCategoriesWithFrontend.js",
+    "setup": "npm run sample && npm run sync-categories && echo 'Setup completed! Run npm start to begin.'",
     "quick-start": "node start.js",
     "check": "node scripts/checkConnection.js",
     "reset": "node scripts/resetData.js"

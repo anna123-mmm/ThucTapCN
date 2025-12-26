@@ -1,46 +1,139 @@
 
-<div class=" container-fluid">
-    <div class="card-body">
-        <div class="col-md-0">
-            <div class="card shadow-lg rounded-4">
-                <div class="card-header bg-primary text-white text-center">
-                    <h4>Add Category</h4>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Thêm Thể Loại Mới</h4>
+                    <a href="/admin/category" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Quay Lại Danh Sách
+                    </a>
                 </div>
+                <div class="card-body">
+                    {{#if error_message}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle"></i> {{error_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
 
-                <div class="card-body border-0">
-                    <form action="/admin/category/create" method="POST">
+                    <form action="/admin/category/create" method="POST" id="createCategoryForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">
+                                        Tên Thể Loại <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           placeholder="Nhập tên thể loại/thể loại (ví dụ: Hành Động, Hài Kịch, Chính Kịch)"
+                                           required
+                                           maxlength="50">
+                                    <div class="form-text">Tên thể loại phải là duy nhất và sẽ được sử dụng trong phân loại phim</div>
+                                </div>
 
-                        <!-- Name -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input name="name" type="text" class="form-control" id="name">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô Tả</label>
+                                    <textarea class="form-control" 
+                                              id="description" 
+                                              name="description" 
+                                              rows="3"
+                                              placeholder="Nhập mô tả ngắn gọn về thể loại/thể loại này (tùy chọn)"
+                                              maxlength="200"></textarea>
+                                    <div class="form-text">Mô tả tùy chọn để giúp xác định thể loại</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Trạng Thái</label>
+                                    <select class="form-select" id="status" name="status">
+                                        <option value="true" selected>Hoạt Động</option>
+                                        <option value="false">Không Hoạt Động</option>
+                                    </select>
+                                    <div class="form-text">Chỉ các thể loại hoạt động mới được hiển thị ở frontend</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Hướng Dẫn Thể Loại</h6>
+                                        <ul class="list-unstyled small">
+                                            <li><i class="fa fa-check text-success"></i> Sử dụng tên thể loại chuẩn</li>
+                                            <li><i class="fa fa-check text-success"></i> Giữ tên ngắn gọn</li>
+                                            <li><i class="fa fa-check text-success"></i> Tránh ký tự đặc biệt</li>
+                                            <li><i class="fa fa-check text-success"></i> Sử dụng chữ hoa đầu từ (ví dụ: "Khoa Học Viễn Tưởng")</li>
+                                        </ul>
+                                        
+                                        <h6 class="card-title mt-3">Thể Loại Phổ Biến</h6>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge bg-secondary">Action</span>
+                                            <span class="badge bg-secondary">Comedy</span>
+                                            <span class="badge bg-secondary">Drama</span>
+                                            <span class="badge bg-secondary">Horror</span>
+                                            <span class="badge bg-secondary">Romance</span>
+                                            <span class="badge bg-secondary">Sci-Fi</span>
+                                            <span class="badge bg-secondary">Thriller</span>
+                                            <span class="badge bg-secondary">Adventure</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Image -->
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Image</label>
-                            <input name="image" type="text" class="form-control" id="image">
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/admin/category" class="btn btn-secondary">
+                                        <i class="fa fa-times"></i> Hủy
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-save"></i> Tạo Thể Loại
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Status -->
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" class="form-control" id="status">
-                                <option value="false" selected>Inactive</option>
-                                <option value="true">Active</option>
-                            </select>
-                        </div>
-                        <!-- Buttons -->
-                        <button type="submit" class="btn btn-primary">Add A Category</button>
-
                     </form>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
 
-</body>
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('createCategoryForm');
+    const nameInput = document.getElementById('name');
+    
+    // Auto-format category name to title case
+    nameInput.addEventListener('blur', function() {
+        const value = this.value.trim();
+        if (value) {
+            // Convert to title case
+            const titleCase = value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            this.value = titleCase;
+        }
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        const name = nameInput.value.trim();
+        
+        if (!name) {
+            e.preventDefault();
+            alert('Vui lòng nhập tên thể loại');
+            nameInput.focus();
+            return false;
+        }
+        
+        if (name.length < 2) {
+            e.preventDefault();
+            alert('Tên thể loại phải có ít nhất 2 ký tự');
+            nameInput.focus();
+            return false;
+        }
+    });
+});
+</script>

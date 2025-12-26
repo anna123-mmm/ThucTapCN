@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 const User = require("../models/User");
 const Movie = require("../models/Movie");
+const Category = require("../models/category");
 const bcryptjs = require("bcryptjs");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -61,32 +62,44 @@ router.get('/', async function(req, res, next) {
       movies = featuredMovies;
     }
     
-    // Get popular movies (by rating)
-    const popularMovies = await Movie.find({ rating: { $exists: true, $ne: null } })
-      .sort({ rating: -1 })
-      .limit(12)
-      .lean();
-    
     // Get recent movies
     const recentMovies = await Movie.find()
       .sort({ createdAt: -1 })
       .limit(12)
       .lean();
     
-    // Get movies by genre for different tabs
-    const actionMovies = await Movie.find({ genres: 'Action' })
+    // Get popular movies (by rating) - exclude movies already in recent
+    const recentMovieIds = recentMovies.map(m => m._id.toString());
+    const popularMovies = await Movie.find({ 
+      rating: { $exists: true, $ne: null },
+      _id: { $nin: recentMovieIds }
+    })
       .sort({ rating: -1 })
       .limit(12)
       .lean();
     
-    const comedyMovies = await Movie.find({ genres: 'Comedy' })
+    // Get movies by genre for different tabs - exclude already shown movies
+    const usedMovieIds = [...recentMovieIds, ...popularMovies.map(m => m._id.toString())];
+    
+    const actionMovies = await Movie.find({ 
+      genres: 'Action',
+      _id: { $nin: usedMovieIds }
+    })
       .sort({ rating: -1 })
       .limit(12)
       .lean();
     
-    // Get all unique genres for dropdown
-    const allGenres = await Movie.distinct('genres');
-    const genres = allGenres.filter(genre => genre && genre.trim() !== '').sort();
+    const comedyMovies = await Movie.find({ 
+      genres: 'Comedy',
+      _id: { $nin: [...usedMovieIds, ...actionMovies.map(m => m._id.toString())] }
+    })
+      .sort({ rating: -1 })
+      .limit(12)
+      .lean();
+    
+    // Get all unique genres for dropdown from Category model (active only)
+    const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
+    const genres = categoryDocuments.map(c => c.name);
     
     res.render('partials/home/index', { 
       title: 'FlixGo - Watch Movies Online Free', 
@@ -144,8 +157,16 @@ router.get('/test-genre', async function(req, res, next) {
     }
 });
 
-router.get('/pricing', function(req, res, next) {
-    res.render('blog/pricing');
+router.get('/pricing', async function(req, res, next) {
+    try {
+        // Get active categories for genres dropdown
+        const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
+        const genres = categoryDocuments.map(c => c.name);
+        res.render('blog/pricing', { genres });
+    } catch (error) {
+        console.error('Error loading genres for pricing page:', error);
+        res.render('blog/pricing', { genres: [] });
+    }
 });
 
 router.get('/signin', function(req, res, next) {
@@ -306,6 +327,14 @@ router.post('/signup', function(req, res, next) {
 module.exports = router;
 
 
-router.get('/about', function(req, res, next) {
-    res.render('blog/about');
+router.get('/about', async function(req, res, next) {
+    try {
+        // Get active categories for genres dropdown
+        const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
+        const genres = categoryDocuments.map(c => c.name);
+        res.render('blog/about', { genres });
+    } catch (error) {
+        console.error('Error loading genres for about page:', error);
+        res.render('blog/about', { genres: [] });
+    }
 });

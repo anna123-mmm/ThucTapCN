@@ -1,0 +1,448 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Thêm Phim Mới</h4>
+                    <a href="/admin/product" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Quay Lại Danh Sách
+                    </a>
+                </div>
+                <div class="card-body">
+                    {{#if error_message}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle"></i> {{error_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+
+                    <form action="/admin/product/create" method="POST" id="createMovieForm">
+                        <!-- TMDB Search Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body">
+                                        <h6 class="card-title mb-3">
+                                            <i class="fa fa-search"></i> Tìm Kiếm Cơ Sở Dữ Liệu TMDB
+                                        </h6>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="tmdbSearch" 
+                                                       placeholder="Tìm kiếm phim trên TMDB (ví dụ: Avengers, Spider-Man)">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button type="button" 
+                                                        class="btn btn-light" 
+                                                        id="searchTmdbBtn">
+                                                    <i class="fa fa-search"></i> Tìm Kiếm TMDB
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="tmdbResults" class="mt-3" style="display: none;">
+                                            <h6>Kết Quả Tìm Kiếm:</h6>
+                                            <div id="tmdbMovieList" class="row"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">
+                                        Tiêu Đề Phim <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="title" 
+                                           name="title" 
+                                           placeholder="Nhập tiêu đề phim"
+                                           required
+                                           maxlength="200">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="overview" class="form-label">
+                                        Tóm Tắt/Mô Tả <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="overview" 
+                                              name="overview" 
+                                              rows="4"
+                                              placeholder="Nhập mô tả/cốt truyện phim"
+                                              required
+                                              maxlength="1000"></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="year" class="form-label">Năm Phát Hành</label>
+                                            <input type="number" 
+                                                   class="form-control" 
+                                                   id="year" 
+                                                   name="year" 
+                                                   placeholder="2024"
+                                                   min="1900" 
+                                                   max="2030"
+                                                   value="{{currentYear}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="rating" class="form-label">Đánh Giá (0-10)</label>
+                                            <input type="number" 
+                                                   class="form-control" 
+                                                   id="rating" 
+                                                   name="rating" 
+                                                   placeholder="7.5"
+                                                   min="0" 
+                                                   max="10" 
+                                                   step="0.1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="genres" class="form-label">Thể Loại</label>
+                                    <div class="row">
+                                        {{#each categories}}
+                                            <div class="col-md-4 col-sm-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" 
+                                                           type="checkbox" 
+                                                           name="genres" 
+                                                           value="{{name}}" 
+                                                           id="genre_{{@index}}">
+                                                    <label class="form-check-label" for="genre_{{@index}}">
+                                                        {{name}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                    <div class="form-text">Chọn một hoặc nhiều thể loại cho phim này</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="poster" class="form-label">URL Poster</label>
+                                    <input type="url" 
+                                           class="form-control" 
+                                           id="poster" 
+                                           name="poster" 
+                                           placeholder="https://image.tmdb.org/t/p/w500/poster.jpg">
+                                    <div class="form-text">URL đến hình ảnh poster phim</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">URL Hình Nền/Ảnh Bìa</label>
+                                    <input type="url" 
+                                           class="form-control" 
+                                           id="image" 
+                                           name="image" 
+                                           placeholder="https://image.tmdb.org/t/p/w1280/backdrop.jpg">
+                                    <div class="form-text">URL đến hình nền hoặc ảnh bìa phim</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="images" class="form-label">Hình Ảnh Bổ Sung</label>
+                                    <textarea class="form-control" 
+                                              id="images" 
+                                              name="images" 
+                                              rows="3"
+                                              placeholder="Nhập URL hình ảnh bổ sung (mỗi dòng một URL)&#10;https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+                                    <div class="form-text">Hình ảnh bổ sung của phim (cảnh quay, hậu trường, v.v.) - mỗi dòng một URL</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="trailerId" class="form-label">ID Trailer YouTube</label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="trailerId" 
+                                                   name="trailerId" 
+                                                   placeholder="dQw4w9WgXcQ">
+                                            <div class="form-text">ID video YouTube cho trailer</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="tmdbId" class="form-label">TMDB ID</label>
+                                            <input type="number" 
+                                                   class="form-control" 
+                                                   id="tmdbId" 
+                                                   name="tmdbId" 
+                                                   placeholder="550">
+                                            <div class="form-text">ID cơ sở dữ liệu phim TMDB (tùy chọn)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Hướng Dẫn Phim</h6>
+                                        <ul class="list-unstyled small">
+                                            <li><i class="fa fa-check text-success"></i> Sử dụng tiêu đề mô tả</li>
+                                            <li><i class="fa fa-check text-success"></i> Viết tóm tắt hấp dẫn</li>
+                                            <li><i class="fa fa-check text-success"></i> Chọn thể loại phù hợp</li>
+                                            <li><i class="fa fa-check text-success"></i> Sử dụng hình ảnh chất lượng cao</li>
+                                            <li><i class="fa fa-check text-success"></i> Xác minh liên kết trailer</li>
+                                        </ul>
+                                        
+                                        <h6 class="card-title mt-3">Xem Trước Hình Ảnh</h6>
+                                        <div class="mb-2">
+                                            <small class="text-muted">Poster:</small>
+                                            <div id="posterPreview" class="text-center mb-2">
+                                                <div class="bg-secondary d-flex align-items-center justify-content-center" style="width: 120px; height: 180px; margin: 0 auto;">
+                                                    <span class="text-white small">Không Có Poster</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small class="text-muted">Hình Nền:</small>
+                                            <div id="imagePreview" class="text-center">
+                                                <div class="bg-secondary d-flex align-items-center justify-content-center" style="width: 120px; height: 68px; margin: 0 auto;">
+                                                    <span class="text-white small">Không Có Hình</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="/admin/product" class="btn btn-secondary">
+                                        <i class="fa fa-times"></i> Hủy
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa fa-save"></i> Tạo Phim
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('createMovieForm');
+    const posterInput = document.getElementById('poster');
+    const imageInput = document.getElementById('image');
+    const posterPreview = document.getElementById('posterPreview');
+    const imagePreview = document.getElementById('imagePreview');
+    const tmdbSearchInput = document.getElementById('tmdbSearch');
+    const searchTmdbBtn = document.getElementById('searchTmdbBtn');
+    const tmdbResults = document.getElementById('tmdbResults');
+    const tmdbMovieList = document.getElementById('tmdbMovieList');
+    
+    // Set current year as default
+    const yearInput = document.getElementById('year');
+    if (!yearInput.value) {
+        yearInput.value = new Date().getFullYear();
+    }
+    
+    // TMDB Search functionality
+    searchTmdbBtn.addEventListener('click', async function() {
+        const query = tmdbSearchInput.value.trim();
+        if (!query) {
+            alert('Vui lòng nhập tiêu đề phim để tìm kiếm');
+            return;
+        }
+        
+        searchTmdbBtn.disabled = true;
+        searchTmdbBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Đang tìm kiếm...';
+        
+        try {
+            const response = await fetch(`/admin/product/search-tmdb?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            
+            if (data.success && data.movies.length > 0) {
+                displayTmdbResults(data.movies);
+                tmdbResults.style.display = 'block';
+                
+                // Show demo message if applicable
+                if (data.demo) {
+                    const demoAlert = document.createElement('div');
+                    demoAlert.className = 'alert alert-info mt-2';
+                    demoAlert.innerHTML = `<i class="fa fa-info-circle"></i> ${data.message}`;
+                    tmdbResults.insertBefore(demoAlert, tmdbMovieList);
+                }
+            } else {
+                alert('Không tìm thấy phim nào. Thử từ khóa tìm kiếm khác.');
+                tmdbResults.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            alert('Lỗi tìm kiếm TMDB. Vui lòng thử lại.');
+        } finally {
+            searchTmdbBtn.disabled = false;
+            searchTmdbBtn.innerHTML = '<i class="fa fa-search"></i> Tìm Kiếm TMDB';
+        }
+    });
+    
+    // Enter key search
+    tmdbSearchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchTmdbBtn.click();
+        }
+    });
+    
+    function displayTmdbResults(movies) {
+        tmdbMovieList.innerHTML = '';
+        
+        movies.forEach(movie => {
+            const movieCard = document.createElement('div');
+            movieCard.className = 'col-md-6 col-lg-4 mb-3';
+            movieCard.innerHTML = `
+                <div class="card bg-light">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col-4">
+                                ${movie.poster ? 
+                                    `<img src="${movie.poster}" alt="${movie.title}" class="img-fluid rounded" style="height: 80px; object-fit: cover;">` :
+                                    `<div class="bg-secondary d-flex align-items-center justify-content-center rounded" style="height: 80px;"><small class="text-white">Không Có Hình</small></div>`
+                                }
+                            </div>
+                            <div class="col-8">
+                                <h6 class="card-title mb-1" style="font-size: 0.9rem;">${movie.title}</h6>
+                                <small class="text-muted">${movie.year || 'N/A'} • ⭐ ${movie.rating || 'N/A'}</small>
+                                <br>
+                                <button type="button" 
+                                        class="btn btn-primary btn-sm mt-1 use-tmdb-data" 
+                                        data-tmdb-id="${movie.id}">
+                                    <i class="fa fa-download"></i> Sử Dụng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            tmdbMovieList.appendChild(movieCard);
+        });
+        
+        // Add click handlers for "Use This" buttons
+        document.querySelectorAll('.use-tmdb-data').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tmdbId = this.dataset.tmdbId;
+                loadTmdbMovieData(tmdbId);
+            });
+        });
+    }
+    
+    async function loadTmdbMovieData(tmdbId) {
+        try {
+            const response = await fetch(`/admin/product/tmdb-details/${tmdbId}`);
+            const data = await response.json();
+            
+            if (data.success && data.movie) {
+                fillFormWithTmdbData(data.movie);
+                tmdbResults.style.display = 'none';
+                
+                const message = data.demo ? 
+                    `Dữ liệu demo đã tải cho "${data.movie.title}"!\n\nĐể lấy dữ liệu TMDB thực, hãy cấu hình TMDB_API_KEY trong file .env.` :
+                    'Dữ liệu phim đã tải thành công từ TMDB!';
+                alert(message);
+            } else {
+                alert('Lỗi tải chi tiết phim: ' + (data.message || 'Lỗi không xác định'));
+            }
+        } catch (error) {
+            console.error('Error loading movie data:', error);
+            alert('Lỗi tải dữ liệu phim. Vui lòng thử lại.');
+        }
+    }
+    
+    function fillFormWithTmdbData(movie) {
+        // Fill basic fields
+        document.getElementById('title').value = movie.title || '';
+        document.getElementById('overview').value = movie.overview || '';
+        document.getElementById('year').value = movie.year || '';
+        document.getElementById('rating').value = movie.rating || '';
+        document.getElementById('poster').value = movie.poster || '';
+        document.getElementById('image').value = movie.image || '';
+        document.getElementById('trailerId').value = movie.trailerId || '';
+        document.getElementById('tmdbId').value = movie.tmdbId || '';
+        
+        // Fill additional images
+        if (movie.images && movie.images.length > 0) {
+            document.getElementById('images').value = movie.images.join('\n');
+        }
+        
+        // Select matching genres
+        if (movie.genres && movie.genres.length > 0) {
+            const genreCheckboxes = document.querySelectorAll('input[name="genres"]');
+            genreCheckboxes.forEach(checkbox => {
+                checkbox.checked = movie.genres.includes(checkbox.value);
+            });
+        }
+        
+        // Trigger image previews
+        posterInput.dispatchEvent(new Event('input'));
+        imageInput.dispatchEvent(new Event('input'));
+    }
+    
+    // Poster preview
+    posterInput.addEventListener('input', function() {
+        const url = this.value.trim();
+        if (url) {
+            posterPreview.innerHTML = `<img src="${url}" alt="Poster Preview" style="width: 120px; height: 180px; object-fit: cover;" onerror="this.parentElement.innerHTML='<div class=\\'bg-danger d-flex align-items-center justify-content-center\\' style=\\'width: 120px; height: 180px;\\'>Invalid URL</div>'">`;
+        } else {
+            posterPreview.innerHTML = '<div class="bg-secondary d-flex align-items-center justify-content-center" style="width: 120px; height: 180px;"><span class="text-white small">Không Có Poster</span></div>';
+        }
+    });
+    
+    // Backdrop image preview
+    imageInput.addEventListener('input', function() {
+        const url = this.value.trim();
+        if (url) {
+            imagePreview.innerHTML = `<img src="${url}" alt="Image Preview" style="width: 120px; height: 68px; object-fit: cover;" onerror="this.parentElement.innerHTML='<div class=\\'bg-danger d-flex align-items-center justify-content-center\\' style=\\'width: 120px; height: 68px;\\'>Invalid URL</div>'">`;
+        } else {
+            imagePreview.innerHTML = '<div class="bg-secondary d-flex align-items-center justify-content-center" style="width: 120px; height: 68px;"><span class="text-white small">Không Có Hình</span></div>';
+        }
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        const title = document.getElementById('title').value.trim();
+        const overview = document.getElementById('overview').value.trim();
+        
+        if (!title) {
+            e.preventDefault();
+            alert('Vui lòng nhập tiêu đề phim');
+            document.getElementById('title').focus();
+            return false;
+        }
+        
+        if (!overview) {
+            e.preventDefault();
+            alert('Vui lòng nhập tóm tắt phim');
+            document.getElementById('overview').focus();
+            return false;
+        }
+        
+        // Check if at least one genre is selected
+        const selectedGenres = document.querySelectorAll('input[name="genres"]:checked');
+        if (selectedGenres.length === 0) {
+            const confirmNoGenres = confirm('Chưa chọn thể loại nào. Bạn có muốn tiếp tục mà không có thể loại không?');
+            if (!confirmNoGenres) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+});
+</script>

@@ -1,12 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
+const Category = require('../models/category');
 const youtubeService = require('../services/youtubeService');
 const tmdbService = require('../services/tmdbService');
 
-// Set layout for all movie routes
-router.all('/*', (req, res, next) => {
+// Set layout for all movie routes and add genres data
+router.all('/*', async (req, res, next) => {
   res.app.locals.layout = 'home';
+  
+  try {
+    // Get active categories for genres dropdown
+    const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
+    const genres = categoryDocuments.map(c => c.name);
+    res.locals.genres = genres;
+  } catch (error) {
+    console.error('Error loading genres for movies routes:', error);
+    res.locals.genres = [];
+  }
+  
   next();
 });
 

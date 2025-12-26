@@ -1,0 +1,290 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Quản lý người dùng</h4>
+                    <a href="/admin/users/create" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> Thêm người dùng mới
+                    </a>
+                </div>
+                <div class="card-body">
+                    {{#if success_message}}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check-circle"></i> {{success_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+
+                    {{#if error_message}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle"></i> {{error_message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {{/if}}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="text-muted">Tổng số người dùng: <strong>{{totalUsers}}</strong></p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="exportUsers()">
+                                    <i class="fa fa-download"></i> Xuất dữ liệu
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshPage()">
+                                    <i class="fa fa-refresh"></i> Làm mới
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th width="5%">#</th>
+                                    <th width="20%">Tên</th>
+                                    <th width="25%">Email</th>
+                                    <th width="15%">Vai trò</th>
+                                    <th width="15%">Trạng thái</th>
+                                    <th width="20%">Ngày tạo</th>
+                                    <th width="20%">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#if users}}
+                                    {{#each users}}
+                                        <tr>
+                                            <td>{{stt}}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm me-2">
+                                                        {{#if avatar}}
+                                                            <img src="{{avatar}}" alt="{{name}}" class="rounded-circle" width="32" height="32">
+                                                        {{else}}
+                                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 14px;">
+                                                                {{substring name 0 1}}
+                                                            </div>
+                                                        {{/if}}
+                                                    </div>
+                                                    <div>
+                                                        <strong>{{name}}</strong>
+                                                        {{#if phone}}
+                                                            <br><small class="text-muted">{{phone}}</small>
+                                                        {{/if}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{email}}</td>
+                                            <td>
+                                                {{#if (eq role 'admin')}}
+                                                    <span class="badge bg-danger">Quản trị viên</span>
+                                                {{else}}
+                                                    <span class="badge bg-primary">Người dùng</span>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                {{#if status}}
+                                                    <span class="badge bg-success">Hoạt động</span>
+                                                {{else}}
+                                                    <span class="badge bg-secondary">Không hoạt động</span>
+                                                {{/if}}
+                                            </td>
+                                            <td>
+                                                <small>{{createdAtFormatted}}</small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="/admin/users/edit/{{_id}}" 
+                                                       class="btn btn-outline-primary btn-sm" 
+                                                       title="Chỉnh sửa người dùng">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    
+                                                    <button type="button" 
+                                                            class="btn btn-outline-{{#if status}}warning{{else}}success{{/if}} btn-sm toggle-status-btn" 
+                                                            data-user-id="{{_id}}"
+                                                            data-user-name="{{name}}"
+                                                            data-current-status="{{status}}"
+                                                            title="{{#if status}}Vô hiệu hóa{{else}}Kích hoạt{{/if}} người dùng"
+                                                            onclick="toggleUserStatus('{{_id}}', '{{name}}', {{status}})">
+                                                        <i class="fa fa-{{#if status}}pause{{else}}play{{/if}}"></i>
+                                                    </button>
+                                                    
+                                                    <button type="button" 
+                                                            class="btn btn-outline-danger btn-sm delete-user-btn" 
+                                                            data-user-id="{{_id}}"
+                                                            data-user-name="{{name}}"
+                                                            title="Xóa người dùng"
+                                                            onclick="deleteUser('{{_id}}', '{{name}}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{else}}
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fa fa-users fa-3x mb-3"></i>
+                                                <p>Không có người dùng nào</p>
+                                                <a href="/admin/users/create" class="btn btn-primary">
+                                                    <i class="fa fa-plus"></i> Thêm người dùng đầu tiên
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {{/if}}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{#if (gt totalPages 1)}}
+                        <nav aria-label="Phân trang người dùng">
+                            <ul class="pagination justify-content-center">
+                                {{#if (gt currentPage 1)}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="/admin/users?page={{subtract currentPage 1}}">Trước</a>
+                                    </li>
+                                {{/if}}
+
+                                {{#each (range 1 totalPages)}}
+                                    <li class="page-item {{#if (eq this ../currentPage)}}active{{/if}}">
+                                        <a class="page-link" href="/admin/users?page={{this}}">{{this}}</a>
+                                    </li>
+                                {{/each}}
+
+                                {{#if (lt currentPage totalPages)}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="/admin/users?page={{add currentPage 1}}">Sau</a>
+                                    </li>
+                                {{/if}}
+                            </ul>
+                        </nav>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+// Simple delete function using confirm dialog
+async function deleteUser(userId, userName) {
+    if (!confirm(`Bạn có chắc chắn muốn xóa người dùng "${userName}"?\n\nHành động này không thể hoàn tác.`)) {
+        return;
+    }
+    
+    try {
+        console.log('Deleting user:', userId, userName);
+        
+        const response = await fetch(`/admin/users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        
+        console.log('Delete response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Delete response data:', data);
+        
+        if (data.success) {
+            alert('Xóa người dùng thành công!');
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Xóa thất bại');
+        }
+    } catch (error) {
+        console.error('Delete error:', error);
+        alert('Lỗi khi xóa người dùng: ' + error.message);
+    }
+}
+
+// Simple status toggle function
+async function toggleUserStatus(userId, userName, currentStatus) {
+    const action = currentStatus ? 'vô hiệu hóa' : 'kích hoạt';
+    
+    if (!confirm(`Bạn có chắc chắn muốn ${action} người dùng "${userName}"?`)) {
+        return;
+    }
+    
+    try {
+        console.log('Toggling status for user:', userId, userName, currentStatus);
+        
+        const response = await fetch(`/admin/users/toggle-status/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        
+        console.log('Status toggle response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Status toggle response data:', data);
+        
+        if (data.success) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Thay đổi trạng thái thất bại');
+        }
+    } catch (error) {
+        console.error('Status toggle error:', error);
+        alert('Lỗi khi cập nhật trạng thái người dùng: ' + error.message);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Export functionality
+    window.exportUsers = function() {
+        // Simple CSV export
+        const users = {{{json users}}};
+        if (!users || users.length === 0) {
+            alert('Không có người dùng để xuất');
+            return;
+        }
+
+        const csvContent = [
+            ['Tên', 'Email', 'Vai trò', 'Trạng thái', 'Số điện thoại', 'Ngày tạo'].join(','),
+            ...users.map(user => [
+                `"${user.name}"`,
+                `"${user.email}"`,
+                `"${user.role}"`,
+                `"${user.status ? 'Hoạt động' : 'Không hoạt động'}"`,
+                `"${user.phone || ''}"`,
+                `"${user.createdAtFormatted}"`
+            ].join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `users_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+
+    // Refresh functionality
+    window.refreshPage = function() {
+        window.location.reload();
+    };
+});
+</script>

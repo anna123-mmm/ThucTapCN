@@ -31,17 +31,9 @@
                                     Genres
                                 </a>
                                 <div class="dropdown-menu header__dropdown-menu" aria-labelledby="genresDropdown">
-                                    <a class="dropdown-item" href="/">All Genres</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="/?genre=Action">Action</a>
-                                    <a class="dropdown-item" href="/?genre=Adventure">Adventure</a>
-                                    <a class="dropdown-item" href="/?genre=Comedy">Comedy</a>
-                                    <a class="dropdown-item" href="/?genre=Crime">Crime</a>
-                                    <a class="dropdown-item" href="/?genre=Drama">Drama</a>
-                                    <a class="dropdown-item" href="/?genre=Horror">Horror</a>
-                                    <a class="dropdown-item" href="/?genre=Romance">Romance</a>
-                                    <a class="dropdown-item" href="/?genre=Sci-Fi">Sci-Fi</a>
-                                    <a class="dropdown-item" href="/?genre=Thriller">Thriller</a>
+                                    {{#each genres}}
+                                        <a class="dropdown-item" href="/?genre={{this}}">{{this}}</a>
+                                    {{/each}}
                                 </div>
                             </li>
                             <!-- end genres dropdown -->
