@@ -189,7 +189,7 @@ const sampleMovies = [
 
 async function createSampleData() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/node');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/flixgo');
     console.log('✅ Đã kết nối MongoDB');
 
     // Kiểm tra xem đã có phim nào chưa

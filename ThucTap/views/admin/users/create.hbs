@@ -18,7 +18,7 @@
 
                     <form action="/admin/users/create" method="POST" id="createUserForm">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -82,37 +82,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="tel" 
-                                                   class="form-control" 
-                                                   id="phone" 
-                                                   name="phone" 
-                                                   placeholder="Nhập số điện thoại">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="dateOfBirth" class="form-label">Ngày sinh</label>
-                                            <input type="date" 
-                                                   class="form-control" 
-                                                   id="dateOfBirth" 
-                                                   name="dateOfBirth">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Địa chỉ</label>
-                                    <textarea class="form-control" 
-                                              id="address" 
-                                              name="address" 
-                                              rows="3"
-                                              placeholder="Nhập địa chỉ"></textarea>
-                                </div>
-
                                 <div class="mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" 
@@ -126,42 +95,6 @@
                                         </label>
                                     </div>
                                     <div class="form-text">Bỏ chọn để tạo người dùng không hoạt động</div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Hướng dẫn người dùng</h6>
-                                        <ul class="list-unstyled small">
-                                            <li><i class="fa fa-check text-success"></i> Sử dụng tên thật</li>
-                                            <li><i class="fa fa-check text-success"></i> Địa chỉ email hợp lệ</li>
-                                            <li><i class="fa fa-check text-success"></i> Mật khẩu mạnh</li>
-                                            <li><i class="fa fa-check text-success"></i> Xác minh số điện thoại</li>
-                                            <li><i class="fa fa-check text-success"></i> Hồ sơ đầy đủ</li>
-                                        </ul>
-                                        
-                                        <h6 class="card-title mt-3">Quyền vai trò</h6>
-                                        <div class="small">
-                                            <div class="mb-2">
-                                                <strong>Người dùng:</strong>
-                                                <ul class="mb-0">
-                                                    <li>Xem phim</li>
-                                                    <li>Tạo danh sách phát</li>
-                                                    <li>Đánh giá & bình luận</li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <strong>Quản trị viên:</strong>
-                                                <ul class="mb-0">
-                                                    <li>Tất cả quyền người dùng</li>
-                                                    <li>Quản lý nội dung</li>
-                                                    <li>Quản lý người dùng</li>
-                                                    <li>Cài đặt hệ thống</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -209,21 +142,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!name) {
             e.preventDefault();
-            alert('Please enter a full name');
+            alert('Vui lòng nhập họ và tên');
             document.getElementById('name').focus();
             return false;
         }
         
         if (!email) {
             e.preventDefault();
-            alert('Please enter an email address');
+            alert('Vui lòng nhập địa chỉ email');
             document.getElementById('email').focus();
             return false;
         }
         
         if (!password || password.length < 5) {
             e.preventDefault();
-            alert('Password must be at least 5 characters long');
+            alert('Mật khẩu phải có ít nhất 5 ký tự');
             document.getElementById('password').focus();
             return false;
         }
@@ -232,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             e.preventDefault();
-            alert('Please enter a valid email address');
+            alert('Vui lòng nhập địa chỉ email hợp lệ');
             document.getElementById('email').focus();
             return false;
         }

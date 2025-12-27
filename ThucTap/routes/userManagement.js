@@ -5,6 +5,10 @@ const bcrypt = require('bcryptjs');
 
 router.all('/*', (req, res, next) => {
     res.app.locals.layout = 'admin';
+    // Disable cache for admin pages
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
     next();
 });
 
@@ -63,7 +67,7 @@ router.get('/create', async function(req, res) {
 // Create new user
 router.post('/create', async function(req, res) {
     try {
-        const { name, email, password, role, phone, address, dateOfBirth, status } = req.body;
+        const { name, email, password, role, status } = req.body;
         
         // Validate required fields
         if (!name || !email) {
@@ -86,9 +90,6 @@ router.post('/create', async function(req, res) {
             email: email.toLowerCase().trim(),
             password: hashedPassword,
             role: role || 'user',
-            phone: phone ? phone.trim() : '',
-            address: address ? address.trim() : '',
-            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
             status: status === 'true' || status === true
         });
 
@@ -111,15 +112,9 @@ router.get('/edit/:id', async function(req, res) {
             return res.redirect('/admin/users');
         }
 
-        // Format date for input field
-        const userObj = user.toObject();
-        if (userObj.dateOfBirth) {
-            userObj.dateOfBirthFormatted = userObj.dateOfBirth.toISOString().split('T')[0];
-        }
-
         res.render('admin/users/edit', {
             title: 'Edit User',
-            user: userObj,
+            user: user.toObject(),
             error_message: req.flash('error_message')
         });
     } catch (err) {
@@ -132,7 +127,7 @@ router.get('/edit/:id', async function(req, res) {
 // Update user (PUT method)
 router.put('/edit/:id', async function(req, res) {
     try {
-        const { name, email, password, role, phone, address, dateOfBirth, status } = req.body;
+        const { name, email, password, role, status } = req.body;
         
         const user = await User.findById(req.params.id);
         if (!user) {
@@ -160,9 +155,6 @@ router.put('/edit/:id', async function(req, res) {
         user.name = name.trim();
         user.email = email.toLowerCase().trim();
         user.role = role || 'user';
-        user.phone = phone ? phone.trim() : '';
-        user.address = address ? address.trim() : '';
-        user.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
         user.status = status === 'true' || status === true;
 
         // Update password if provided
@@ -183,7 +175,7 @@ router.put('/edit/:id', async function(req, res) {
 // Update user (POST method - fallback for method override issues)
 router.post('/edit/:id', async function(req, res) {
     try {
-        const { name, email, password, role, phone, address, dateOfBirth, status } = req.body;
+        const { name, email, password, role, status } = req.body;
         
         const user = await User.findById(req.params.id);
         if (!user) {
@@ -211,9 +203,6 @@ router.post('/edit/:id', async function(req, res) {
         user.name = name.trim();
         user.email = email.toLowerCase().trim();
         user.role = role || 'user';
-        user.phone = phone ? phone.trim() : '';
-        user.address = address ? address.trim() : '';
-        user.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
         user.status = status === 'true' || status === true;
 
         // Update password if provided

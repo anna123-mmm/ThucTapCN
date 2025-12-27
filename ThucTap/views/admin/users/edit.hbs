@@ -20,157 +20,82 @@
                         <input type="hidden" name="_method" value="PUT">
                         
                         <div class="row">
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">
-                                                Họ và tên <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="name" 
-                                                   name="name" 
-                                                   value="{{user.name}}"
-                                                   placeholder="Nhập họ và tên"
-                                                   required
-                                                   maxlength="100">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">
-                                                Địa chỉ email <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="email" 
-                                                   class="form-control" 
-                                                   id="email" 
-                                                   name="email" 
-                                                   value="{{user.email}}"
-                                                   placeholder="Nhập địa chỉ email"
-                                                   required
-                                                   maxlength="255">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">
-                                                Mật khẩu mới
-                                            </label>
-                                            <div class="input-group">
-                                                <input type="password" 
-                                                       class="form-control" 
-                                                       id="password" 
-                                                       name="password" 
-                                                       placeholder="Để trống để giữ mật khẩu hiện tại"
-                                                       minlength="5">
-                                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
-                                            </div>
-                                            <div class="form-text">Để trống để giữ mật khẩu hiện tại. Tối thiểu 5 ký tự nếu thay đổi.</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="role" class="form-label">Vai trò</label>
-                                            <select class="form-select" id="role" name="role">
-                                                <option value="user" {{#if (eq user.role 'user')}}selected{{/if}}>Người dùng</option>
-                                                <option value="admin" {{#if (eq user.role 'admin')}}selected{{/if}}>Quản trị viên</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="tel" 
-                                                   class="form-control" 
-                                                   id="phone" 
-                                                   name="phone" 
-                                                   value="{{user.phone}}"
-                                                   placeholder="Nhập số điện thoại">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="dateOfBirth" class="form-label">Ngày sinh</label>
-                                            <input type="date" 
-                                                   class="form-control" 
-                                                   id="dateOfBirth" 
-                                                   name="dateOfBirth"
-                                                   value="{{user.dateOfBirthFormatted}}">
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="address" class="form-label">Địa chỉ</label>
-                                    <textarea class="form-control" 
-                                              id="address" 
-                                              name="address" 
-                                              rows="3"
-                                              placeholder="Nhập địa chỉ">{{user.address}}</textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="status" 
-                                               name="status" 
-                                               value="true" 
-                                               {{#if user.status}}checked{{/if}}>
-                                        <label class="form-check-label" for="status">
-                                            Người dùng hoạt động
-                                        </label>
-                                    </div>
-                                    <div class="form-text">Bỏ chọn để vô hiệu hóa người dùng</div>
+                                    <label for="name" class="form-label">
+                                        Họ và tên <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="name" 
+                                           name="name" 
+                                           value="{{user.name}}"
+                                           placeholder="Nhập họ và tên"
+                                           required
+                                           maxlength="100">
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <h6 class="card-title">Thông tin người dùng</h6>
-                                        <div class="small">
-                                            <div class="mb-2">
-                                                <strong>ID người dùng:</strong><br>
-                                                <code>{{user._id}}</code>
-                                            </div>
-                                            <div class="mb-2">
-                                                <strong>Ngày tạo:</strong><br>
-                                                {{#if user.createdAt}}
-                                                    {{formatDate user.createdAt}}
-                                                {{else}}
-                                                    Không có thông tin
-                                                {{/if}}
-                                            </div>
-                                            <div class="mb-2">
-                                                <strong>Cập nhật lần cuối:</strong><br>
-                                                {{#if user.updatedAt}}
-                                                    {{formatDate user.updatedAt}}
-                                                {{else}}
-                                                    Không có thông tin
-                                                {{/if}}
-                                            </div>
-                                        </div>
-                                        
-                                        <h6 class="card-title mt-3">Ghi chú bảo mật</h6>
-                                        <ul class="list-unstyled small">
-                                            <li><i class="fa fa-info-circle text-info"></i> Mật khẩu được mã hóa</li>
-                                            <li><i class="fa fa-info-circle text-info"></i> Email phải là duy nhất</li>
-                                            <li><i class="fa fa-warning text-warning"></i> Vai trò admin có toàn quyền</li>
-                                            <li><i class="fa fa-warning text-warning"></i> Người dùng không hoạt động không thể đăng nhập</li>
-                                        </ul>
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">
+                                        Địa chỉ email <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           name="email" 
+                                           value="{{user.email}}"
+                                           placeholder="Nhập địa chỉ email"
+                                           required
+                                           maxlength="255">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">
+                                        Mật khẩu mới
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" 
+                                               class="form-control" 
+                                               id="password" 
+                                               name="password" 
+                                               placeholder="Để trống để giữ mật khẩu hiện tại"
+                                               minlength="5">
+                                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Để trống để giữ mật khẩu hiện tại. Tối thiểu 5 ký tự nếu thay đổi.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Vai trò</label>
+                                    <select class="form-select" id="role" name="role">
+                                        <option value="user" {{#if (eq user.role 'user')}}selected{{/if}}>Người dùng</option>
+                                        <option value="admin" {{#if (eq user.role 'admin')}}selected{{/if}}>Quản trị viên</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" 
+                                       type="checkbox" 
+                                       id="status" 
+                                       name="status" 
+                                       value="true" 
+                                       {{#if user.status}}checked{{/if}}>
+                                <label class="form-check-label" for="status">
+                                    Người dùng hoạt động
+                                </label>
+                            </div>
+                            <div class="form-text">Bỏ chọn để vô hiệu hóa người dùng</div>
                         </div>
 
                         <div class="row">

@@ -78,25 +78,6 @@ router.get('/', async function(req, res, next) {
       .limit(12)
       .lean();
     
-    // Get movies by genre for different tabs - exclude already shown movies
-    const usedMovieIds = [...recentMovieIds, ...popularMovies.map(m => m._id.toString())];
-    
-    const actionMovies = await Movie.find({ 
-      genres: 'Action',
-      _id: { $nin: usedMovieIds }
-    })
-      .sort({ rating: -1 })
-      .limit(12)
-      .lean();
-    
-    const comedyMovies = await Movie.find({ 
-      genres: 'Comedy',
-      _id: { $nin: [...usedMovieIds, ...actionMovies.map(m => m._id.toString())] }
-    })
-      .sort({ rating: -1 })
-      .limit(12)
-      .lean();
-    
     // Get all unique genres for dropdown from Category model (active only)
     const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
     const genres = categoryDocuments.map(c => c.name);
@@ -106,8 +87,6 @@ router.get('/', async function(req, res, next) {
       movies: movies,
       popularMovies,
       recentMovies,
-      actionMovies,
-      comedyMovies,
       genres: genres,
       searchQuery: searchQuery,
       genreFilter: genreFilter,
@@ -121,8 +100,6 @@ router.get('/', async function(req, res, next) {
       movies: [],
       popularMovies: [],
       recentMovies: [],
-      actionMovies: [],
-      comedyMovies: [],
       genres: [],
       searchQuery: '',
       genreFilter: '',
@@ -154,18 +131,6 @@ router.get('/test-genre', async function(req, res, next) {
         }
     } catch (error) {
         res.json({ success: false, error: error.message });
-    }
-});
-
-router.get('/pricing', async function(req, res, next) {
-    try {
-        // Get active categories for genres dropdown
-        const categoryDocuments = await Category.find({ status: true }).sort({ name: 1 });
-        const genres = categoryDocuments.map(c => c.name);
-        res.render('blog/pricing', { genres });
-    } catch (error) {
-        console.error('Error loading genres for pricing page:', error);
-        res.render('blog/pricing', { genres: [] });
     }
 });
 

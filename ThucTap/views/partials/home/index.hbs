@@ -174,12 +174,6 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">POPULAR</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">ACTION</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">COMEDY</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -265,88 +259,6 @@
                     {{else}}
                         <div class="col-12">
                             <p class="content__empty">No popular movies available.</p>
-                        </div>
-                    {{/if}}
-                </div>
-            </div>
-
-            <!-- Tab 3: Action Movies -->
-            <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
-                <div class="row">
-                    {{#if actionMovies}}
-                        {{#each actionMovies}}
-                        <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
-                            <div class="card">
-                                <div class="card__cover">
-                                    {{#if poster}}
-                                        <img src="{{poster}}" alt="{{title}}">
-                                    {{else if posterPath}}
-                                        <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
-                                    {{else}}
-                                        <img src="img/covers/cover.jpg" alt="{{title}}">
-                                    {{/if}}
-                                    <a href="/movies/{{_id}}/watch" class="card__play">
-                                        <i class="icon ion-ios-play"></i>
-                                    </a>
-                                </div>
-                                <div class="card__content">
-                                    <h3 class="card__title"><a href="/movies/{{_id}}">{{title}}</a></h3>
-                                    <span class="card__category">
-                                        {{#if genres}}
-                                            {{#each genres}}<a href="/movies?genre={{this}}">{{this}}</a>{{/each}}
-                                        {{else}}
-                                            <a href="#">Uncategorized</a>
-                                        {{/if}}
-                                    </span>
-                                    <span class="card__rate"><i class="icon ion-ios-star"></i>{{#if rating}}{{rating}}{{else}}N/A{{/if}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                    {{else}}
-                        <div class="col-12">
-                            <p class="content__empty">No action movies available.</p>
-                        </div>
-                    {{/if}}
-                </div>
-            </div>
-
-            <!-- Tab 4: Comedy Movies -->
-            <div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="4-tab">
-                <div class="row">
-                    {{#if comedyMovies}}
-                        {{#each comedyMovies}}
-                        <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
-                            <div class="card">
-                                <div class="card__cover">
-                                    {{#if poster}}
-                                        <img src="{{poster}}" alt="{{title}}">
-                                    {{else if posterPath}}
-                                        <img src="https://image.tmdb.org/t/p/w300{{posterPath}}" alt="{{title}}">
-                                    {{else}}
-                                        <img src="img/covers/cover.jpg" alt="{{title}}">
-                                    {{/if}}
-                                    <a href="/movies/{{_id}}/watch" class="card__play">
-                                        <i class="icon ion-ios-play"></i>
-                                    </a>
-                                </div>
-                                <div class="card__content">
-                                    <h3 class="card__title"><a href="/movies/{{_id}}">{{title}}</a></h3>
-                                    <span class="card__category">
-                                        {{#if genres}}
-                                            {{#each genres}}<a href="/movies?genre={{this}}">{{this}}</a>{{/each}}
-                                        {{else}}
-                                            <a href="#">Uncategorized</a>
-                                        {{/if}}
-                                    </span>
-                                    <span class="card__rate"><i class="icon ion-ios-star"></i>{{#if rating}}{{rating}}{{else}}N/A{{/if}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                    {{else}}
-                        <div class="col-12">
-                            <p class="content__empty">No comedy movies available.</p>
                         </div>
                     {{/if}}
                 </div>

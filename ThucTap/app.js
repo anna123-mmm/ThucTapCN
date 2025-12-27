@@ -140,7 +140,13 @@ app.use((req, res, next) => {
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var movieManagementRouter = require('./routes/movieManagement');
+var categoryRouter = require('./routes/category');
 var userManagementRouter = require('./routes/userManagement');
+var usersRouter = require('./routes/users');
+var moviesRouter = require('./routes/movies');
+var signinRouter = require('./routes/signin');
+var signupRouter = require('./routes/signup');
+var aboutRouter = require('./routes/about');
 
 console.log(path.join(__dirname, 'views', 'layouts'));
 // view engine setup
@@ -155,9 +161,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
 app.use('/', indexRouter);
+app.use('/admin/product', movieManagementRouter);
+app.use('/admin/category', categoryRouter);
+app.use('/admin/users', userManagementRouter);
 app.use('/admin', adminRouter);
 app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
+app.use('/signin', signinRouter);
+app.use('/signup', signupRouter);
+app.use('/about', aboutRouter);
 
 //database mongo
 const mongoose = require('mongoose');

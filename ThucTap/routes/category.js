@@ -5,6 +5,10 @@ const Movie = require('../models/Movie');
 
 router.all('/*', (req, res, next) => {
     res.app.locals.layout = 'admin';
+    // Disable cache for admin pages
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
     next();
 });
 

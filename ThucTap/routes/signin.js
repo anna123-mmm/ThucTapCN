@@ -1,9 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET blog page. */
-router.get('/signin', function(req, res, next) {
-    res.render('signin');
+router.all('/*',(req,res, next)=>{
+    res.app.locals.layout = 'signin';
+    next();
+});
+
+/* GET signin page. */
+router.get('/', function(req, res, next) {
+  res.render('layouts/signin', { 
+    title: 'Sign In - FlixGo',
+    error_message: req.flash('error_message'),
+    success_message: req.flash('success_message')
+  });
 });
 
 module.exports = router;
